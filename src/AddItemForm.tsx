@@ -1,4 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 
 type PropsType = {
     addItem: (title: string) => void
@@ -25,15 +28,20 @@ export const AddItemForm = (props: PropsType) => {
 
     return (
         <div>
-            <input
+            <TextField
+                variant={"standard"}
+                error={!!error}
+                helperText={error}
+                label={"Title"}
+                placeholder={"Type title here..."}
                 value={title}
                 onChange={onChangeHandler}
                 onKeyDown={onKeyDownHandler}
                 /*I replace onKeyPress with onKeyDown because onKeyPress deprecated */
-                className={error ? "error" : ""}
             />
-            <button onClick={onClickHandler}>+</button>
-            {error && <div className={"error-message"}>{error}</div>}
+            <IconButton onClick={onClickHandler}>
+                <AddCircleOutline color={"primary"}/>
+            </IconButton>
         </div>
     )
 }
