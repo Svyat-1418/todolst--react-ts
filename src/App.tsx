@@ -18,7 +18,7 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 export type FilterValuesType = "all" | "active" | "completed"
