@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
@@ -6,25 +6,29 @@ import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 type PropsType = {
     addItem: (title: string) => void
 }
-export const AddItemForm = (props: PropsType) => {
+export const AddItemForm = React.memo(({addItem}: PropsType) => {
+    console.log("AddItemForm")
+
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<string | null>(null)
 
-    const onClickHandler = () => {
+    const onClickHandler = useCallback(() => {
         if (title.trim() !== "") {
-            props.addItem(title.trim())
+            addItem(title.trim())
             setTitle("")
         } else {
             setError("Title is required")
         }
-    }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
-    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+    }, [addItem, title])
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+    }, [])
+    const onKeyDownHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) setError(null)
         if (e.key === "Enter") {
             onClickHandler()
         }
-    }
+    }, [onClickHandler, error])
 
     return (
         <div>
@@ -44,4 +48,4 @@ export const AddItemForm = (props: PropsType) => {
             </IconButton>
         </div>
     )
-}
+})
