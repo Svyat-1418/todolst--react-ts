@@ -1,34 +1,40 @@
-import {TaskType} from "./AppWithRedux";
 import React, {ChangeEvent, useCallback} from "react";
 import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "./EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
+import {TaskStatuses, TaskType} from "./api/todolistAPI";
 
 type PropsType = {
-    todolistId: string
     task: TaskType
     removeTask: (id: string, todolistId: string) => void
-    changeTaskStatus: (id: string, todolistId: string, isDone: boolean) => void
+    changeTaskStatus: (id: string, todolistId: string, status: TaskStatuses) => void
     changeTaskTitle: (id: string, todolistId: string, title: string) => void
 }
-export const Task = React.memo((props: PropsType) => {
+export const Task = React.memo(({
+                                    task,
+                                    removeTask, changeTaskStatus,
+                                    changeTaskTitle
+                                }: PropsType) => {
     console.log("Task")
 
     const onClickHandler = useCallback(() => {
-        props.removeTask(props.task.id, props.todolistId)
-    }, [props.removeTask, props.task.id, props.todolistId])
+        removeTask(task.id, task.todoListId)
+    }, [removeTask, task.id, task.todoListId])
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        props.changeTaskStatus(props.task.id, props.todolistId, e.currentTarget.checked)
-    }, [props.changeTaskStatus, props.task.id, props.todolistId])
-    const changeTaskTitle = useCallback((title: string) => {
-        props.changeTaskTitle(props.task.id, props.todolistId, title)
-    }, [props.changeTaskTitle, props.task.id, props.todolistId])
+        const status = e.currentTarget.checked
+            ? TaskStatuses.Completed
+            : TaskStatuses.New
+        changeTaskStatus(task.id, task.todoListId, status)
+    }, [changeTaskStatus, task.id, task.todoListId])
+    const changeTaskTitleHandler = useCallback((title: string) => {
+        changeTaskTitle(task.id, task.todoListId, title)
+    }, [changeTaskTitle, task.id, task.todoListId])
 
     return (
         <div>
-            <Checkbox onChange={onChangeHandler} checked={props.task.isDone}/>
-            <EditableSpan title={props.task.title} changeTitle={changeTaskTitle}/>
+            <Checkbox onChange={onChangeHandler} checked={task.status === TaskStatuses.Completed}/>
+            <EditableSpan title={task.title} changeTitle={changeTaskTitleHandler}/>
             <IconButton onClick={onClickHandler}>
                 <Delete color={"error"}/>
             </IconButton>

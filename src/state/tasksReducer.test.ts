@@ -1,20 +1,39 @@
-import {TasksStateType} from '../AppWithRedux';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasksReducer';
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    tasksReducer,
+    TasksStateType
+} from './tasksReducer';
 import {addTodolistAC, removeTodolistAC} from "./todolistsReducer";
+import {TaskPriorities, TaskStatuses} from "../api/todolistAPI";
 
 let startState: TasksStateType
 
 beforeEach(() => {
     startState = {
         "todolistId1": [
-            {id: "1", title: "HTML&CSS", isDone: true},
-            {id: "2", title: "JS", isDone: false},
-            {id: "3", title: "ReactJS", isDone: false}
+            {id: "1", title: "HTML&CSS", status: TaskStatuses.Completed,
+                todoListId: "todolistId1", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "2", title: "JS", status: TaskStatuses.New,
+                todoListId: "todolistId1", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "3", title: "ReactJS", status: TaskStatuses.New,
+                todoListId: "todolistId1", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ],
         "todolistId2": [
-            {id: "1", title: "NodeJS", isDone: false},
-            {id: "2", title: "Express", isDone: true},
-            {id: "3", title: "NestJS", isDone: false}
+            {id: "1", title: "NodeJS", status: TaskStatuses.New,
+                todoListId: "todolistId2", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "2", title: "Express", status: TaskStatuses.Completed,
+                todoListId: "todolistId2", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "3", title: "NestJS", status: TaskStatuses.New,
+                todoListId: "todolistId2", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ]
     }
 })
@@ -38,15 +57,15 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"].length).toBe(4);
     expect(endState["todolistId2"][0].id).toBeDefined();
     expect(endState["todolistId2"][0].title).toBe(newTaskTitle);
-    expect(endState["todolistId2"][0].isDone).toBeFalsy();
+    expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 })
 
 test('status of specified task should be changed', () => {
-    const action = changeTaskStatusAC("3", "todolistId2", true);
+    const action = changeTaskStatusAC("3", "todolistId2", TaskStatuses.Completed);
     const endState = tasksReducer(startState, action)
 
-    expect(endState["todolistId2"][2].isDone).toBeTruthy();
-    expect(endState["todolistId1"][2].isDone).toBeFalsy();
+    expect(endState["todolistId2"][2].status).toBe(TaskStatuses.Completed);
+    expect(endState["todolistId1"][2].status).toBe(TaskStatuses.New);
 });
 
 test('title of specified task should be changed', () => {

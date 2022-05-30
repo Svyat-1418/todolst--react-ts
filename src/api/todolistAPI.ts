@@ -13,7 +13,7 @@ export const todolistAPI = {
         return instance.get<Array<TodolistType>>(`todo-lists`)
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{item: TodolistType}>>(`todo-lists/`, {title})
+        return instance.post<ResponseType<{ item: TodolistType }>>(`todo-lists/`, {title})
     },
     deleteTodolist(id: string) {
         return instance.delete<ResponseType>(`todo-lists/${id}`)
@@ -25,14 +25,29 @@ export const todolistAPI = {
         return instance.get<GetTaskResponseType>(`todo-lists/${todolistId}/tasks`)
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
+        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
     },
     deleteTask(id: string, todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${id}`)
     },
     updateTask(id: string, todolistId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<{item: TaskType }>>(`todo-lists/${todolistId}/tasks/${id}`, model)
+        return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${id}`, model)
     }
+}
+
+export enum TaskStatuses {
+    New = 0,
+    InPrgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4
 }
 
 type ResponseType<T = {}> = {
@@ -41,13 +56,13 @@ type ResponseType<T = {}> = {
     messages: Array<string>
     data: T
 }
-type TodolistType = {
+export type TodolistType = {
     id: string
     addedDate: string
     order: number
     title: string
 }
-type TaskType = {
+export type TaskType = {
     addedDate: string
     deadline: null | string
     description: null | string
@@ -67,8 +82,8 @@ type GetTaskResponseType = {
 type UpdateTaskModelType = {
     title: string
     description: string | null
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string | null
     deadline: string | null
 }

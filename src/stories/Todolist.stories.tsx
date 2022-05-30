@@ -2,6 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import {Todolist} from "../Todolist"
 import {action} from "@storybook/addon-actions";
+import {TaskPriorities, TaskStatuses} from "../api/todolistAPI";
 
 
 export default {
@@ -26,9 +27,15 @@ TodolistBasicStory.args = {
     title: "Frontend",
     filter: "all",
     tasks: [
-        {id: "1", title: "HTML&CSS", isDone: true},
-        {id: "2", title: "JS", isDone: false},
-        {id: "3", title: "ReactJS", isDone: false}
+        {id: "1", title: "HTML&CSS", status: TaskStatuses.Completed,
+            todoListId: "todolistId1", deadline: "", description: "",
+            startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+        {id: "2", title: "JS", status: TaskStatuses.New,
+            todoListId: "todolistId1", deadline: "", description: "",
+            startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+        {id: "3", title: "ReactJS", status: TaskStatuses.New,
+            todoListId: "todolistId1", deadline: "", description: "",
+            startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
     ],
 
 

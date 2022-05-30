@@ -4,32 +4,47 @@ import {combineReducers, createStore} from "redux"
 import {tasksReducer} from "../../state/tasksReducer"
 import {todolistsReducer} from "../../state/todolistsReducer"
 import {AppRootStateType} from "../../state/store";
+import {TaskPriorities, TaskStatuses} from "../../api/todolistAPI";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer
 })
 
-const initialGlobalState = {
+const initialGlobalState: AppRootStateType = {
     todolists: [
-        {id: "todolistId1", title: "Frontend", filter: "all"},
-        {id: "todolistId2", title: "Backend", filter: "all"}
+        {id: "todolistId1", title: "Frontend",
+            filter: "all", addedDate: "", order: 0},
+        {id: "todolistId2", title: "Backend",
+            filter: "all", addedDate: "", order: 0}
     ] ,
     tasks: {
         "todolistId1": [
-            {id: "1", title: "HTML&CSS", isDone: true},
-            {id: "2", title: "JS", isDone: false},
-            {id: "3", title: "ReactJS", isDone: false}
+            {id: "1", title: "HTML&CSS", status: TaskStatuses.Completed,
+                todoListId: "todolistId1", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "2", title: "JS", status: TaskStatuses.New,
+                todoListId: "todolistId1", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "3", title: "ReactJS", status: TaskStatuses.New,
+                todoListId: "todolistId1", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ],
         "todolistId2": [
-            {id: "1", title: "NodeJS", isDone: false},
-            {id: "2", title: "Express", isDone: true},
-            {id: "3", title: "NestJS", isDone: false}
+            {id: "1", title: "NodeJS", status: TaskStatuses.New,
+                todoListId: "todolistId2", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "2", title: "Express", status: TaskStatuses.Completed,
+                todoListId: "todolistId2", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
+            {id: "3", title: "NestJS", status: TaskStatuses.New,
+                todoListId: "todolistId1", deadline: "", description: "",
+                startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ]
     }
 };
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType);
+export const storyBookStore = createStore(rootReducer, initialGlobalState);
 
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => (
