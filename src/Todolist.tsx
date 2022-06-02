@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {EditableSpan} from "./EditableSpan";
 import {AddItemForm} from "./AddItemForm";
 import Button from "@mui/material/Button";
@@ -7,6 +7,8 @@ import Delete from "@mui/icons-material/Delete";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolistAPI";
 import {FilterValuesType} from "./state/todolistsReducer";
+import {fetchTasksTC, UpdateDomainTaskModelType} from "./state/tasksReducer";
+import {useAppDispatch} from "./state/store";
 
 type PropsType = {
     id: string
@@ -15,18 +17,24 @@ type PropsType = {
     tasks: Array<TaskType>
     removeTask: (id: string, todolistId: string) => void
     addTask: (todolistId: string, title: string) => void
-    changeTaskStatus: (id: string, todolistId: string, status: TaskStatuses) => void
-    changeTaskTitle: (id: string, todolistId: string, title: string) => void
+    updateTask: (id: string, todolistId: string, model: UpdateDomainTaskModelType) => void
     removeTodolist: (id: string) => void
     changeTodolistFilter: (id: string, value: FilterValuesType) => void
     changeTodolistTitle: (id: string, title: string) => void
 
 }
 
-export const Todolist = React.memo(({id, title, filter,
-                                        tasks, removeTask, addTask, changeTaskStatus, changeTaskTitle,
-                                        removeTodolist, changeTodolistFilter, changeTodolistTitle}: PropsType) => {
+export const Todolist = React.memo(({
+                                        id, title, filter,
+                                        tasks, removeTask, addTask, updateTask,
+                                        removeTodolist, changeTodolistFilter, changeTodolistTitle
+                                    }: PropsType) => {
     console.log("Todolist")
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(fetchTasksTC(id))
+        // eslint-disable-next-line
+    }, [])
 
     const addTaskCallback = useCallback((title: string) => {
         addTask(id, title)
@@ -67,8 +75,7 @@ export const Todolist = React.memo(({id, title, filter,
                     key={t.id}
                     task={t}
                     removeTask={removeTask}
-                    changeTaskStatus={changeTaskStatus}
-                    changeTaskTitle={changeTaskTitle}
+                    updateTask={updateTask}
                 />
             )}
 

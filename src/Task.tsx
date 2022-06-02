@@ -4,17 +4,16 @@ import {EditableSpan} from "./EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import {TaskStatuses, TaskType} from "./api/todolistAPI";
+import {UpdateDomainTaskModelType} from "./state/tasksReducer";
 
 type PropsType = {
     task: TaskType
     removeTask: (id: string, todolistId: string) => void
-    changeTaskStatus: (id: string, todolistId: string, status: TaskStatuses) => void
-    changeTaskTitle: (id: string, todolistId: string, title: string) => void
+    updateTask: (id: string, todolistId: string, model: UpdateDomainTaskModelType) => void
 }
 export const Task = React.memo(({
                                     task,
-                                    removeTask, changeTaskStatus,
-                                    changeTaskTitle
+                                    removeTask, updateTask
                                 }: PropsType) => {
     console.log("Task")
 
@@ -25,11 +24,11 @@ export const Task = React.memo(({
         const status = e.currentTarget.checked
             ? TaskStatuses.Completed
             : TaskStatuses.New
-        changeTaskStatus(task.id, task.todoListId, status)
-    }, [changeTaskStatus, task.id, task.todoListId])
+        updateTask(task.id, task.todoListId, {status})
+    }, [updateTask, task.id, task.todoListId])
     const changeTaskTitleHandler = useCallback((title: string) => {
-        changeTaskTitle(task.id, task.todoListId, title)
-    }, [changeTaskTitle, task.id, task.todoListId])
+        updateTask(task.id, task.todoListId, {title})
+    }, [updateTask, task.id, task.todoListId])
 
     return (
         <div>

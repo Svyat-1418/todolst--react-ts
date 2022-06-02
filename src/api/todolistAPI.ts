@@ -79,7 +79,7 @@ type GetTaskResponseType = {
     totalCount: number
     items: Array<TaskType>
 }
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
     title: string
     description: string | null
     status: TaskStatuses
