@@ -1,16 +1,17 @@
 import React, {useCallback, useEffect} from "react";
-import {EditableSpan} from "./EditableSpan";
-import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
+import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {Task} from "./Task";
-import {TaskStatuses, TaskType} from "./api/todolistAPI";
-import {FilterValuesType} from "./state/todolistsReducer";
-import {fetchTasksTC, UpdateDomainTaskModelType} from "./state/tasksReducer";
-import {useAppDispatch} from "./state/store";
+import {Task} from "./Task/Task";
+import {TaskStatuses, TaskType} from "../../../api/todolistAPI";
+import {FilterValuesType} from "../todolistsReducer";
+import {fetchTasksTC, UpdateDomainTaskModelType} from "../tasksReducer";
+import {useAppDispatch} from "../../../App/store";
 
 type PropsType = {
+    demo: boolean
     id: string
     title: string
     filter: FilterValuesType
@@ -25,6 +26,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(({
+                                        demo,
                                         id, title, filter,
                                         tasks, removeTask, addTask, updateTask,
                                         removeTodolist, changeTodolistFilter, changeTodolistTitle
@@ -32,7 +34,7 @@ export const Todolist = React.memo(({
     console.log("Todolist")
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(fetchTasksTC(id))
+        if (!demo) dispatch(fetchTasksTC(id))
         // eslint-disable-next-line
     }, [])
 
