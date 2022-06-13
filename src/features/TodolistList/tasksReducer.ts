@@ -5,6 +5,7 @@ import {
 } from "./todolistsReducer";
 import {TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolistAPI";
 import {AppRootStateType, AppThunk} from "../../App/store";
+import {setAppStatusAC} from "../../App/appReducer";
 
 export const tasksReducer = (state: TasksStateType = initialState, action: TasksActionsType): TasksStateType => {
     switch (action.type) {
@@ -47,24 +48,31 @@ export const updateTaskAC = (id: string, todolistId: string, model: UpdateDomain
 
 //Thunks
 export const fetchTasksTC = (todolistId: string): AppThunk => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     todolistAPI.getTasks(todolistId)
         .then((res) => {
             dispatch(setTasksAC(todolistId, res.data.items))
+            dispatch(setAppStatusAC("succeeded"))
         })
 }
 export const addTaskTC = (todolistId: string, title: string): AppThunk => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     todolistAPI.createTask(todolistId, title)
         .then((res) => {
             dispatch(addTaskAC(res.data.data.item))
+            dispatch(setAppStatusAC("succeeded"))
         })
 }
 export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     todolistAPI.deleteTask(id, todolistId)
         .then((res) => {
             dispatch(removeTaskAC(id, todolistId))
+            dispatch(setAppStatusAC("succeeded"))
         })
 }
 export const updateTaskTC = (id: string, todolistId: string, domainModel: UpdateDomainTaskModelType): AppThunk => (dispatch, getState: () => AppRootStateType) => {
+    dispatch(setAppStatusAC("loading"))
     const correctTask = getState().tasks[todolistId].find(t => t.id === id)
     if (!correctTask) {
         console.warn(`task don't find`)
@@ -82,6 +90,7 @@ export const updateTaskTC = (id: string, todolistId: string, domainModel: Update
     todolistAPI.updateTask(id, todolistId, apiModel)
         .then((res) => {
             dispatch(updateTaskAC(id, todolistId, apiModel))
+            dispatch(setAppStatusAC("succeeded"))
         })
 }
 

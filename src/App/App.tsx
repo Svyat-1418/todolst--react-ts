@@ -6,9 +6,17 @@ import Menu from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import LinearProgress from "@mui/material/LinearProgress";
 import {TodolistList} from "../features/TodolistList/TodolistList";
 
+import {RequestStatusType} from "./appReducer";
+import {AppRootStateType} from "./store";
+import {useSelector} from "react-redux";
+
 function App({demo = false}: { demo?: boolean }) {
+
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
     return (
         <div className="App">
             <AppBar position={"static"}>
@@ -20,6 +28,9 @@ function App({demo = false}: { demo?: boolean }) {
                     <Button color={"inherit"}>Login</Button>
                 </Toolbar>
             </AppBar>
+
+            {status === "loading" && <LinearProgress color={"info"} />}
+
             <Container fixed>
                 <TodolistList demo={demo}/>
             </Container>
