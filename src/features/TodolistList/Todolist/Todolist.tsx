@@ -5,17 +5,19 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import {Task} from "./Task/Task";
-import {TaskStatuses, TaskType} from "../../../api/todolistAPI";
+import {TaskStatuses} from "../../../api/todolistAPI";
 import {FilterValuesType} from "../todolistsReducer";
-import {fetchTasksTC, UpdateDomainTaskModelType} from "../tasksReducer";
+import {fetchTasksTC, TaskDomainType, UpdateDomainTaskModelType} from "../tasksReducer";
 import {useAppDispatch} from "../../../App/store";
+import {RequestStatusType} from "../../../App/appReducer";
 
 type PropsType = {
     demo: boolean
     id: string
     title: string
     filter: FilterValuesType
-    tasks: Array<TaskType>
+    entityStatus: RequestStatusType
+    tasks: Array<TaskDomainType>
     removeTask: (id: string, todolistId: string) => void
     addTask: (todolistId: string, title: string) => void
     updateTask: (id: string, todolistId: string, model: UpdateDomainTaskModelType) => void
@@ -27,7 +29,7 @@ type PropsType = {
 
 export const Todolist = React.memo(({
                                         demo,
-                                        id, title, filter,
+                                        id, title, filter, entityStatus,
                                         tasks, removeTask, addTask, updateTask,
                                         removeTodolist, changeTodolistFilter, changeTodolistTitle
                                     }: PropsType) => {
@@ -67,12 +69,12 @@ export const Todolist = React.memo(({
 
     return (
         <div>
-            <h3><EditableSpan title={title} changeTitle={changeTodolistTitleCallback}/>
-                <IconButton onClick={removeTodolistCallback}>
+            <h3><EditableSpan disabled={entityStatus === "loading"} title={title} changeTitle={changeTodolistTitleCallback}/>
+                <IconButton disabled={entityStatus === "loading"} onClick={removeTodolistCallback}>
                     <Delete color={"error"}/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTaskCallback}/>
+            <AddItemForm disabled={entityStatus === "loading"} addItem={addTaskCallback}/>
             {filteredTasks.map(t => <Task
                     key={t.id}
                     task={t}

@@ -14,35 +14,38 @@ const rootReducer = combineReducers({
 const initialGlobalState: AppRootStateType = {
     todolists: [
         {id: "todolistId1", title: "Frontend",
-            filter: "all", addedDate: "", order: 0},
+            filter: "all", addedDate: "", order: 0, entityStatus: "idle",},
         {id: "todolistId2", title: "Backend",
-            filter: "all", addedDate: "", order: 0}
+            filter: "all", addedDate: "", order: 0, entityStatus: "idle",}
     ] ,
     tasks: {
         "todolistId1": [
             {id: "1", title: "HTML&CSS", status: TaskStatuses.Completed,
-                todoListId: "todolistId1", deadline: "", description: "",
+                todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "2", title: "JS", status: TaskStatuses.New,
-                todoListId: "todolistId1", deadline: "", description: "",
+                todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "3", title: "ReactJS", status: TaskStatuses.New,
-                todoListId: "todolistId1", deadline: "", description: "",
+                todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ],
         "todolistId2": [
             {id: "1", title: "NodeJS", status: TaskStatuses.New,
-                todoListId: "todolistId2", deadline: "", description: "",
+                todoListId: "todolistId2", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "2", title: "Express", status: TaskStatuses.Completed,
-                todoListId: "todolistId2", deadline: "", description: "",
+                todoListId: "todolistId2", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "3", title: "NestJS", status: TaskStatuses.New,
-                todoListId: "todolistId1", deadline: "", description: "",
+                todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ]
     },
-    app: {status: "idle"}
+    app: {
+        status: "idle",
+        error: null
+    }
 };
 
 export const storyBookStore = createStore(rootReducer, initialGlobalState);

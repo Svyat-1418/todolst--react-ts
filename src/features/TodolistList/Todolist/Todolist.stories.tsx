@@ -26,15 +26,16 @@ TodolistBasicStory.args = {
     id: "todolistId1",
     title: "Frontend",
     filter: "all",
+    entityStatus: "idle",
     tasks: [
         {id: "1", title: "HTML&CSS", status: TaskStatuses.Completed,
-            todoListId: "todolistId1", deadline: "", description: "",
+            todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
             startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
         {id: "2", title: "JS", status: TaskStatuses.New,
-            todoListId: "todolistId1", deadline: "", description: "",
+            todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
             startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
         {id: "3", title: "ReactJS", status: TaskStatuses.New,
-            todoListId: "todolistId1", deadline: "", description: "",
+            todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
             startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
     ],
 
