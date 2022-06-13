@@ -12,6 +12,7 @@ import {TodolistList} from "../features/TodolistList/TodolistList";
 import {RequestStatusType} from "./appReducer";
 import {AppRootStateType} from "./store";
 import {useSelector} from "react-redux";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 
 function App({demo = false}: { demo?: boolean }) {
 
@@ -19,6 +20,7 @@ function App({demo = false}: { demo?: boolean }) {
 
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position={"static"}>
                 <Toolbar>
                     <IconButton>

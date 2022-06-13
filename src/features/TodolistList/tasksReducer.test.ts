@@ -3,10 +3,11 @@ import {
     updateTaskAC,
     removeTaskAC,
     tasksReducer,
-    TasksStateType, UpdateDomainTaskModelType, setTasksAC
+    TasksStateType, UpdateDomainTaskModelType, setTasksAC, changeTaskEntityStatusAC
 } from './tasksReducer';
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolistsReducer";
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../../api/todolistAPI";
+import {RequestStatusType} from "../../App/appReducer";
 
 let startState: TasksStateType
 
@@ -14,24 +15,24 @@ beforeEach(() => {
     startState = {
         "todolistId1": [
             {id: "1", title: "HTML&CSS", status: TaskStatuses.Completed,
-                todoListId: "todolistId1", deadline: "", description: "",
+                todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "2", title: "JS", status: TaskStatuses.New,
-                todoListId: "todolistId1", deadline: "", description: "",
+                todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "3", title: "ReactJS", status: TaskStatuses.New,
-                todoListId: "todolistId1", deadline: "", description: "",
+                todoListId: "todolistId1", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ],
         "todolistId2": [
             {id: "1", title: "NodeJS", status: TaskStatuses.New,
-                todoListId: "todolistId2", deadline: "", description: "",
+                todoListId: "todolistId2", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "2", title: "Express", status: TaskStatuses.Completed,
-                todoListId: "todolistId2", deadline: "", description: "",
+                todoListId: "todolistId2", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle},
             {id: "3", title: "NestJS", status: TaskStatuses.New,
-                todoListId: "todolistId2", deadline: "", description: "",
+                todoListId: "todolistId2", deadline: "", description: "", entityStatus: "idle",
                 startDate: "", order: 0, addedDate: "", priority: TaskPriorities.Middle}
         ]
     }
@@ -131,4 +132,13 @@ test('property with id should be deleted', () => {
 
     expect(keys.length).toBe(1);
     expect(endState["todolistId2"]).toBeUndefined()
+});
+test('correct entityStatus of task should be changed', () => {
+    const newEntityStatus: RequestStatusType = "loading";
+
+    const action = changeTaskEntityStatusAC("2", "todolistId2", newEntityStatus)
+    const endState = tasksReducer(startState, action);
+
+    expect(endState["todolistId1"][1].entityStatus).toBe("idle");
+    expect(endState["todolistId2"][1].entityStatus).toBe(newEntityStatus);
 });

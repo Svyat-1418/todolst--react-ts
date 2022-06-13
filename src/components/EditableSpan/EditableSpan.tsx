@@ -4,16 +4,19 @@ import TextField from "@mui/material/TextField";
 type PropsType = {
     title: string
     changeTitle: (title: string) => void
+    disabled?: boolean
 }
-export const EditableSpan = React.memo(({title, changeTitle}: PropsType) => {
+export const EditableSpan = React.memo(({title, changeTitle, disabled}: PropsType) => {
     console.log("EditableSpan")
 
     const [editMode, setEditMode] = useState<boolean>(false)
     const [localTitle, setLocalTitle] = useState<string>("false")
 
     const activateEditMode = () => {
-        setLocalTitle(title)
-        setEditMode(true)
+        if (disabled) {
+            setLocalTitle(title)
+            setEditMode(true)
+        }
     }
     const activateViewMode = useCallback(() => {
         changeTitle(localTitle)

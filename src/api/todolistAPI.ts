@@ -49,6 +49,10 @@ export enum TaskPriorities {
     Urgently = 3,
     Later = 4
 }
+export enum ResultCodes {
+    success = 0,
+    error = 1
+}
 
 type ResponseType<T = {}> = {
     resultCode: number

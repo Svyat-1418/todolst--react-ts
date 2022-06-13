@@ -5,8 +5,9 @@ import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 
 type PropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
-export const AddItemForm = React.memo(({addItem}: PropsType) => {
+export const AddItemForm = React.memo(({addItem, disabled}: PropsType) => {
     console.log("AddItemForm")
 
     const [title, setTitle] = useState<string>("")
@@ -33,6 +34,7 @@ export const AddItemForm = React.memo(({addItem}: PropsType) => {
     return (
         <div>
             <TextField
+                disabled={disabled}
                 variant={"standard"}
                 error={!!error}
                 helperText={error}
@@ -43,7 +45,7 @@ export const AddItemForm = React.memo(({addItem}: PropsType) => {
                 onKeyDown={onKeyDownHandler}
                 /*I replace onKeyPress with onKeyDown because onKeyPress deprecated */
             />
-            <IconButton onClick={onClickHandler}>
+            <IconButton disabled={disabled} onClick={onClickHandler}>
                 <AddCircleOutline color={"primary"}/>
             </IconButton>
         </div>
