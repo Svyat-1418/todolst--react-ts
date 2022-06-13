@@ -5,7 +5,9 @@ import {
 } from "./todolistsReducer";
 import {ResultCodes, TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolistAPI";
 import {AppRootStateType, AppThunk} from "../../App/store";
-import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../App/appReducer";
+import {RequestStatusType, setAppStatusAC} from "../../App/appReducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
+import {AxiosError} from "axios";
 
 export const tasksReducer = (state: TasksStateType = initialState, action: TasksActionsType): TasksStateType => {
     switch (action.type) {
@@ -77,10 +79,11 @@ export const addTaskTC = (todolistId: string, title: string): AppThunk => (dispa
             if (res.data.resultCode === ResultCodes.success) {
                 dispatch(addTaskAC(res.data.data.item))
             } else if (res.data.resultCode === ResultCodes.error && res.data.messages.length) {
-                dispatch(setAppErrorAC(res.data.messages[0]))
-            } else {
-                dispatch(setAppErrorAC("Some error has occurred. Contact the site administrator"))
+                handleServerAppError(res.data, dispatch)
             }
+        })
+        .catch((error: AxiosError) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispatch) => {
@@ -90,6 +93,9 @@ export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispa
         .then((res) => {
             dispatch(removeTaskAC(id, todolistId))
             dispatch(setAppStatusAC("succeeded"))
+        })
+        .catch((error: AxiosError) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const updateTaskTC = (id: string, todolistId: string, domainModel: UpdateDomainTaskModelType): AppThunk => (dispatch, getState: () => AppRootStateType) => {
@@ -115,14 +121,13 @@ export const updateTaskTC = (id: string, todolistId: string, domainModel: Update
             if (res.data.resultCode === ResultCodes.success) {
                 dispatch(updateTaskAC(id, todolistId, apiModel))
                 dispatch(changeTaskEntityStatusAC(id, todolistId, "idle"))
-            } else if (res.data.resultCode === ResultCodes.error && res.data.messages.length) {
-                dispatch(setAppErrorAC(res.data.messages[0]))
-                dispatch(changeTaskEntityStatusAC(id, todolistId, "idle"))
             } else {
-                dispatch(setAppErrorAC("Some error has occurred. Contact the site administrator"))
-                dispatch(changeTaskEntityStatusAC(id, todolistId, "idle"))
+                handleServerAppError(res.data, dispatch)
             }
-            dispatch(setAppStatusAC("idle"))
+            dispatch(changeTaskEntityStatusAC(id, todolistId, "idle"))
+        })
+        .catch((error: AxiosError) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 

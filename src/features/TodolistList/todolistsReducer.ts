@@ -1,6 +1,8 @@
 import {ResultCodes, todolistAPI, TodolistType} from "../../api/todolistAPI";
 import {AppThunk} from "../../App/store";
-import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../App/appReducer";
+import {RequestStatusType, setAppStatusAC} from "../../App/appReducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
+import {AxiosError} from "axios";
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -54,11 +56,11 @@ export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
             if (res.data.resultCode === ResultCodes.success) {
                 dispatch(addTodolistAC(res.data.data.item))
             } else if (res.data.resultCode === ResultCodes.error && res.data.messages.length) {
-                dispatch(setAppErrorAC(res.data.messages[0]))
-            } else {
-                dispatch(setAppErrorAC("Some error has occurred. Contact the site administrator"))
+                handleServerAppError(res.data, dispatch)
             }
-            dispatch(setAppStatusAC("succeeded"))
+        })
+        .catch((error: AxiosError) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const removeTodolistTC = (id: string): AppThunk => (dispatch) => {
@@ -68,6 +70,9 @@ export const removeTodolistTC = (id: string): AppThunk => (dispatch) => {
         .then((res) => {
             dispatch(removeTodolistAC(id))
             dispatch(setAppStatusAC("succeeded"))
+        })
+        .catch((error: AxiosError) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const changeTodolistTitleTC = (id: string, title: string): AppThunk => (dispatch) => {
@@ -79,13 +84,12 @@ export const changeTodolistTitleTC = (id: string, title: string): AppThunk => (d
                 dispatch(changeTodolistTitleAC(id, title))
                 dispatch(changeTodolistEntityStatusAC(id, "idle"))
             } else if (res.data.resultCode === ResultCodes.error && res.data.messages.length) {
-                dispatch(setAppErrorAC(res.data.messages[0]))
-                dispatch(changeTodolistEntityStatusAC(id, "idle"))
-            } else {
-                dispatch(setAppErrorAC("Some error has occurred. Contact the site administrator"))
-                dispatch(changeTodolistEntityStatusAC(id, "idle"))
+                handleServerAppError(res.data, dispatch)
             }
-            dispatch(setAppStatusAC("succeeded"))
+            dispatch(changeTodolistEntityStatusAC(id, "idle"))
+        })
+        .catch((error: AxiosError) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 
