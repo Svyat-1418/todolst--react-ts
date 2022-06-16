@@ -13,6 +13,8 @@ import {RequestStatusType} from "./appReducer";
 import {AppRootStateType} from "./store";
 import {useSelector} from "react-redux";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {Login} from "../features/Login/Login";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 function App({demo = false}: { demo?: boolean }) {
 
@@ -31,10 +33,16 @@ function App({demo = false}: { demo?: boolean }) {
                 </Toolbar>
             </AppBar>
 
-            {status === "loading" && <LinearProgress color={"info"} />}
+            {status === "loading" && <LinearProgress color={"info"}/>}
 
             <Container fixed>
-                <TodolistList demo={demo}/>
+                <Routes>
+                    <Route path={"/"} element={<TodolistList demo={demo}/>} />
+                    <Route path={"login"} element={<Login/>} />_
+
+                    <Route path={"/404"} element={<h1>404 PAGE NOT FOUND</h1>}/>
+                    <Route path={"*"} element={<Navigate to={"/404"}/>}/>
+                </Routes>
             </Container>
         </div>
     )
