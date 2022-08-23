@@ -8,8 +8,10 @@ import {Task} from "./Task/Task";
 import {TaskStatuses} from "../../../api/todolistAPI";
 import {FilterValuesType} from "../todolistsReducer";
 import {fetchTasksTC, TaskDomainType, UpdateDomainTaskModelType} from "../tasksReducer";
-import {useAppDispatch} from "../../../App/store";
+import {AppRootStateType, useAppDispatch} from "../../../App/store";
 import {RequestStatusType} from "../../../App/appReducer";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 type PropsType = {
     demo: boolean
@@ -35,8 +37,11 @@ export const Todolist = React.memo(({
                                     }: PropsType) => {
     console.log("Todolist")
     const dispatch = useAppDispatch()
+
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
     useEffect(() => {
-        if (!demo) dispatch(fetchTasksTC(id))
+        if (!demo || !isLoggedIn) dispatch(fetchTasksTC(id))
         // eslint-disable-next-line
     }, [])
 
@@ -65,6 +70,10 @@ export const Todolist = React.memo(({
         filteredTasks = tasks.filter(t => t.status === TaskStatuses.New)
     } else if (filter === "completed") {
         filteredTasks = tasks.filter(t => t.status === TaskStatuses.Completed)
+    }
+
+    if (!isLoggedIn) {
+        return <Navigate to={"/login"}/>
     }
 
     return (

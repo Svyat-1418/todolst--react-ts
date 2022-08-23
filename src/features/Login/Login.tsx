@@ -8,6 +8,11 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
+import {AppRootStateType, useAppDispatch} from "../../App/store";
+import {useSelector} from "react-redux";
+import {LoginParamsType} from "../../api/todolistAPI";
+import {loginTC} from "./authReducer";
+import {Navigate} from "react-router-dom";
 
 type FormikErrorType = {
     email?: string
@@ -16,6 +21,10 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -23,7 +32,9 @@ export const Login = () => {
             rememberMe: false
         },
         validate: (values) => {
-            const errors: FormikErrorType = {};
+            const errors: Partial<LoginParamsType> = {};
+            //Partial<LoginParamsType> делает ВСЕ поля LoginParamsType необязательными не влияя на сам тип
+
             if (!values.email) {
                 errors.email = 'Required';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -38,10 +49,14 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            alert(JSON.stringify(values))
             formik.resetForm()
+            dispatch(loginTC(values))
         }
     })
+
+    if (isLoggedIn) {
+        return <Navigate to={"/"}/>
+    }
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
