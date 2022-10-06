@@ -1,5 +1,6 @@
 {
   "name": "todolst--react-ts",
+  "homepage": "https://Svyat-1418.github.io/todolst--react-ts",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -37,7 +38,9 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "jest:integration": "jest -c integration/jest.config.js",
-    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration"
+    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -79,6 +82,7 @@
     "@storybook/react": "^6.5.3",
     "@storybook/testing-library": "^0.0.11",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "gh-pages": "^4.0.0",
     "jest-image-snapshot": "^4.5.1",
     "jest-puppeteer": "^6.1.0",
     "prop-types": "^15.8.1",
