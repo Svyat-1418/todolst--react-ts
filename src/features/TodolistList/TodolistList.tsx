@@ -23,14 +23,20 @@ import {Todolist} from "./Todolist/Todolist";
 
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import {Navigate} from "react-router-dom";
 
 export const TodolistList = ({demo = false}: {demo: boolean}) => {
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (!demo) dispatch(fetchTodolistsTC())
+        if (demo || !isLoggedIn) {
+            return;
+        }
+        dispatch(fetchTodolistsTC())
         // eslint-disable-next-line
     }, [])
 
@@ -56,6 +62,10 @@ export const TodolistList = ({demo = false}: {demo: boolean}) => {
     const changeTodolistTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodolistTitleTC(id, title))
     }, [dispatch])
+
+    if (!isLoggedIn) {
+        return <Navigate to={"/login"}/>
+    }
 
     return (
         <>

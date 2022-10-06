@@ -36,14 +36,6 @@ export const Todolist = React.memo(({
                                         removeTodolist, changeTodolistFilter, changeTodolistTitle
                                     }: PropsType) => {
     console.log("Todolist")
-    const dispatch = useAppDispatch()
-
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-
-    useEffect(() => {
-        if (!demo || !isLoggedIn) dispatch(fetchTasksTC(id))
-        // eslint-disable-next-line
-    }, [])
 
     const addTaskCallback = useCallback((title: string) => {
         addTask(id, title)
@@ -70,10 +62,6 @@ export const Todolist = React.memo(({
         filteredTasks = tasks.filter(t => t.status === TaskStatuses.New)
     } else if (filter === "completed") {
         filteredTasks = tasks.filter(t => t.status === TaskStatuses.Completed)
-    }
-
-    if (!isLoggedIn) {
-        return <Navigate to={"/login"}/>
     }
 
     return (
