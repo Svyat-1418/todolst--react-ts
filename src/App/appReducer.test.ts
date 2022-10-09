@@ -1,6 +1,6 @@
-import {appReducer, InitialStateType, setAppErrorAC, setAppStatusAC} from "./appReducer";
+import {appReducer, RequestStatusType, setAppError, setAppStatus} from "./appReducer";
 
-let startState: InitialStateType
+let startState: any
 
 beforeEach(() => {
     startState = {
@@ -10,12 +10,14 @@ beforeEach(() => {
     }
 })
 test('app status should be changed', () => {
-    const endState = appReducer(startState, setAppStatusAC("loading"))
+    // @ts-ignore
+    const endState = appReducer(startState, setAppStatus("loading"))
 
     expect(endState.status).toBe("loading")
 })
 test('error should be set', () => {
-    const endState = appReducer(startState, setAppErrorAC("Some error has occurred"))
+    // @ts-ignore
+    const endState = appReducer(startState, setAppError("Some error has occurred"))
 
     expect(endState.error).toBe("Some error has occurred")
 })

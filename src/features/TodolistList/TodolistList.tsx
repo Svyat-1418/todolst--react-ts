@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "../../App/store";
 import {
     addTodolistTC,
-    changeTodolistFilterAC,
+    changeTodolistFilter,
     changeTodolistTitleTC,
     fetchTodolistsTC,
     FilterValuesType,
@@ -56,8 +56,8 @@ export const TodolistList = ({demo = false}: {demo: boolean}) => {
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistTC(title))
     }, [dispatch])
-    const changeTodolistFilter = useCallback((id: string, value: FilterValuesType) => {
-        dispatch(changeTodolistFilterAC(id, value))
+    const changeTodolistFilterCallback = useCallback((id: string, value: FilterValuesType) => {
+        dispatch(changeTodolistFilter({id, filter: value}))
     }, [dispatch])
     const changeTodolistTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodolistTitleTC(id, title))
@@ -92,7 +92,7 @@ export const TodolistList = ({demo = false}: {demo: boolean}) => {
                                         addTask={addTask}
                                         updateTask={updateTask}
                                         removeTodolist={removeTodolist}
-                                        changeTodolistFilter={changeTodolistFilter}
+                                        changeTodolistFilterCallback={changeTodolistFilterCallback}
                                         changeTodolistTitle={changeTodolistTitle}
                                     />
                                 </Paper>

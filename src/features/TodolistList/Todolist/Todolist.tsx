@@ -24,7 +24,7 @@ type PropsType = {
     addTask: (todolistId: string, title: string) => void
     updateTask: (id: string, todolistId: string, model: UpdateDomainTaskModelType) => void
     removeTodolist: (id: string) => void
-    changeTodolistFilter: (id: string, value: FilterValuesType) => void
+    changeTodolistFilterCallback: (id: string, value: FilterValuesType) => void
     changeTodolistTitle: (id: string, title: string) => void
 
 }
@@ -33,7 +33,7 @@ export const Todolist = React.memo(({
                                         demo,
                                         id, title, filter, entityStatus,
                                         tasks, removeTask, addTask, updateTask,
-                                        removeTodolist, changeTodolistFilter, changeTodolistTitle
+                                        removeTodolist, changeTodolistFilterCallback, changeTodolistTitle
                                     }: PropsType) => {
     console.log("Todolist")
 
@@ -48,14 +48,14 @@ export const Todolist = React.memo(({
     }, [changeTodolistTitle, id])
 
     const onClickAllHandler = useCallback(() => {
-        changeTodolistFilter(id, "all")
-    }, [changeTodolistFilter, id])
+        changeTodolistFilterCallback(id, "all")
+    }, [changeTodolistFilterCallback, id])
     const onClickActiveHandler = useCallback(() => {
-        changeTodolistFilter(id, "active")
-    }, [changeTodolistFilter, id])
+        changeTodolistFilterCallback(id, "active")
+    }, [changeTodolistFilterCallback, id])
     const onClickCompletedHandler = useCallback(() => {
-        changeTodolistFilter(id, "completed")
-    }, [changeTodolistFilter, id])
+        changeTodolistFilterCallback(id, "completed")
+    }, [changeTodolistFilterCallback, id])
 
     let filteredTasks = tasks
     if (filter === "active") {
