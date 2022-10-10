@@ -1,6 +1,10 @@
 import {appReducer, RequestStatusType, setAppError, setAppStatus} from "./appReducer";
 
-let startState: any
+let startState: {
+    status: RequestStatusType,
+    error: string | null,
+    isInitialized: boolean
+}
 
 beforeEach(() => {
     startState = {
@@ -10,14 +14,12 @@ beforeEach(() => {
     }
 })
 test('app status should be changed', () => {
-    // @ts-ignore
-    const endState = appReducer(startState, setAppStatus("loading"))
+    const endState = appReducer(startState, setAppStatus({status: "loading"}))
 
     expect(endState.status).toBe("loading")
 })
 test('error should be set', () => {
-    // @ts-ignore
-    const endState = appReducer(startState, setAppError("Some error has occurred"))
+    const endState = appReducer(startState, setAppError({error: "Some error has occurred"}))
 
     expect(endState.error).toBe("Some error has occurred")
 })
