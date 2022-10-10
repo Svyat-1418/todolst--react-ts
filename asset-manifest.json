@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/todolst--react-ts/static/css/main.e6c13ad2.css",
-    "main.js": "/todolst--react-ts/static/js/main.4927d99a.js",
+    "main.js": "/todolst--react-ts/static/js/main.402d21ad.js",
     "static/js/787.9e4e8316.chunk.js": "/todolst--react-ts/static/js/787.9e4e8316.chunk.js",
     "index.html": "/todolst--react-ts/index.html",
     "main.e6c13ad2.css.map": "/todolst--react-ts/static/css/main.e6c13ad2.css.map",
-    "main.4927d99a.js.map": "/todolst--react-ts/static/js/main.4927d99a.js.map",
+    "main.402d21ad.js.map": "/todolst--react-ts/static/js/main.402d21ad.js.map",
     "787.9e4e8316.chunk.js.map": "/todolst--react-ts/static/js/787.9e4e8316.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.4927d99a.js"
+    "static/js/main.402d21ad.js"
   ]
 }
