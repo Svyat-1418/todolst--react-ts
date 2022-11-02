@@ -7,7 +7,7 @@ import Delete from "@mui/icons-material/Delete";
 import {Task} from "./Task/Task";
 import {TaskStatuses} from "../../../api/todolistAPI";
 import {FilterValuesType} from "../todolistsReducer";
-import {fetchTasksTC, TaskDomainType, UpdateDomainTaskModelType} from "../tasksReducer";
+import {fetchTasks, TaskDomainType, UpdateDomainTaskModelType} from "../tasksReducer";
 import {AppRootStateType, useAppDispatch} from "../../../App/store";
 import {RequestStatusType} from "../../../App/appReducer";
 import { useSelector } from "react-redux";
@@ -20,42 +20,41 @@ type PropsType = {
     filter: FilterValuesType
     entityStatus: RequestStatusType
     tasks: Array<TaskDomainType>
-    removeTask: (id: string, todolistId: string) => void
-    addTask: (todolistId: string, title: string) => void
-    updateTask: (id: string, todolistId: string, model: UpdateDomainTaskModelType) => void
-    removeTodolist: (id: string) => void
-    changeTodolistFilterCallback: (id: string, value: FilterValuesType) => void
-    changeTodolistTitle: (id: string, title: string) => void
+    removeTaskCb: (id: string, todolistId: string) => void
+    addTaskCb: (todolistId: string, title: string) => void
+    updateTaskCb: (id: string, todolistId: string, model: UpdateDomainTaskModelType) => void
+    removeTodolistCb: (id: string) => void
+    changeTodolistFilterCb: (id: string, value: FilterValuesType) => void
+    changeTodolistTitleCb: (id: string, title: string) => void
 
 }
 
 export const Todolist = React.memo(({
                                         demo,
                                         id, title, filter, entityStatus,
-                                        tasks, removeTask, addTask, updateTask,
-                                        removeTodolist, changeTodolistFilterCallback, changeTodolistTitle
+                                        tasks, removeTaskCb, addTaskCb, updateTaskCb,
+                                        removeTodolistCb, changeTodolistFilterCb, changeTodolistTitleCb
                                     }: PropsType) => {
-    console.log("Todolist")
 
     const addTaskCallback = useCallback((title: string) => {
-        addTask(id, title)
-    }, [addTask, id])
+        addTaskCb(id, title)
+    }, [addTaskCb, id])
     const removeTodolistCallback = useCallback(() => {
-        removeTodolist(id)
-    }, [removeTodolist, id])
+        removeTodolistCb(id)
+    }, [removeTodolistCb, id])
     const changeTodolistTitleCallback = useCallback((title: string) => {
-        changeTodolistTitle(id, title)
-    }, [changeTodolistTitle, id])
+        changeTodolistTitleCb(id, title)
+    }, [changeTodolistTitleCb, id])
 
     const onClickAllHandler = useCallback(() => {
-        changeTodolistFilterCallback(id, "all")
-    }, [changeTodolistFilterCallback, id])
+        changeTodolistFilterCb(id, "all")
+    }, [changeTodolistFilterCb, id])
     const onClickActiveHandler = useCallback(() => {
-        changeTodolistFilterCallback(id, "active")
-    }, [changeTodolistFilterCallback, id])
+        changeTodolistFilterCb(id, "active")
+    }, [changeTodolistFilterCb, id])
     const onClickCompletedHandler = useCallback(() => {
-        changeTodolistFilterCallback(id, "completed")
-    }, [changeTodolistFilterCallback, id])
+        changeTodolistFilterCb(id, "completed")
+    }, [changeTodolistFilterCb, id])
 
     let filteredTasks = tasks
     if (filter === "active") {
@@ -75,8 +74,8 @@ export const Todolist = React.memo(({
             {filteredTasks.map(t => <Task
                     key={t.id}
                     task={t}
-                    removeTask={removeTask}
-                    updateTask={updateTask}
+                    removeTask={removeTaskCb}
+                    updateTask={updateTaskCb}
                 />
             )}
 

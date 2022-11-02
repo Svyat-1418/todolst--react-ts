@@ -9,14 +9,14 @@ import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
 import {TodolistList} from "../features/TodolistList/TodolistList";
 
-import {initializeAppTC, RequestStatusType} from "./appReducer";
+import {initializeApp, RequestStatusType} from "./appReducer";
 import {AppRootStateType, useAppDispatch} from "./store";
 import {useSelector} from "react-redux";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
-import {logoutTC} from "../features/Login/authReducer";
+import {logout} from "../features/Login/authReducer";
 
 function App({demo = false}: { demo?: boolean }) {
     const dispatch = useAppDispatch()
@@ -26,7 +26,7 @@ function App({demo = false}: { demo?: boolean }) {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(initializeApp())
     }, [])
 
     if (!isInitialized) {
@@ -46,7 +46,7 @@ function App({demo = false}: { demo?: boolean }) {
                         <Menu style={{color: "white"}}/>
                     </IconButton>
                     <Typography variant={"body1"}>News</Typography>
-                    {isLoggedIn && <Button color={"inherit"} onClick={() => dispatch(logoutTC())}>Log out</Button>}
+                    {isLoggedIn && <Button color={"inherit"} onClick={() => dispatch(logout())}>Log out</Button>}
                 </Toolbar>
             </AppBar>
 

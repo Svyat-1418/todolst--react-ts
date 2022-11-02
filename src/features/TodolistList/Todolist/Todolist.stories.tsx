@@ -9,12 +9,12 @@ export default {
     title: 'Todolist/Todolist',
     component: Todolist,
     args: {
-        removeTask: action("Remove button inside Task clicked"),
-        addTask: action("Add button inside Todolist clicked"),
+        removeTaskCb: action("Remove button inside Task clicked"),
+        addTaskCb: action("Add button inside Todolist clicked"),
         changeTaskStatus: action("Status changed inside Task"),
         changeTaskTitle: action("Title changed inside Task"),
-        removeTodolist: action("Remove button inside Todolist clicked"),
-        changeTodolistTitle: action("Title changed inside Todolist"),
+        removeTodolistCb: action("Remove button inside Todolist clicked"),
+        changeTodolistTitleCb: action("Title changed inside Todolist"),
         changeTodolistFilter: action("Filter changed inside Todolist")
     }
 } as ComponentMeta<typeof Todolist>;

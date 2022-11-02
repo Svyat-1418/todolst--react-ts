@@ -11,7 +11,7 @@ import {useFormik} from "formik";
 import {AppRootStateType, useAppDispatch} from "../../App/store";
 import {useSelector} from "react-redux";
 import {LoginParamsType} from "../../api/todolistAPI";
-import {loginTC} from "./authReducer";
+import {login} from "./authReducer";
 import {Navigate} from "react-router-dom";
 
 type FormikErrorType = {
@@ -50,7 +50,7 @@ export const Login = () => {
         },
         onSubmit: values => {
             formik.resetForm()
-            dispatch(loginTC(values))
+            dispatch(login(values))
         }
     })
 

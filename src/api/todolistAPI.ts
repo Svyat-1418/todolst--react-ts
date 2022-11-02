@@ -64,11 +64,12 @@ export enum TaskPriorities {
     Later = 4
 }
 
-export enum ResultCodes {
+export enum ResultCode {
     success = 0,
     error = 1
 }
 
+export type FieldErrorType = { field: string; error: string }
 export type ResponseType<T = {}> = {
     resultCode: number
     fieldsErrors: Array<string>
