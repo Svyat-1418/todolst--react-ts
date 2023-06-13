@@ -11,6 +11,7 @@ import {useFormik} from "formik";
 import {AppRootStateType, useAppDispatch} from "../../App/store";
 import {useSelector} from "react-redux";
 import {LoginParamsType} from "../../api/todolistAPI";
+import {selectIsLoggedIn} from "../auth/auth.selectors";
 import {login} from "./authReducer";
 import {Navigate} from "react-router-dom";
 
@@ -22,7 +23,7 @@ type FormikErrorType = {
 
 export const Login = () => {
     const dispatch = useAppDispatch()
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useSelector(selectIsLoggedIn)
 
 
     const formik = useFormik({

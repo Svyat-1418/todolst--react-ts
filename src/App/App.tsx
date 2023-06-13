@@ -7,7 +7,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
+import {selectIsLoggedIn} from "../features/auth/auth.selectors";
 import {TodolistList} from "../features/TodolistList/TodolistList";
+import {selectAppStatus, selectIsInitialized} from "./app.selectors";
 
 import {initializeApp, RequestStatusType} from "./appReducer";
 import {AppRootStateType, useAppDispatch} from "./store";
@@ -21,9 +23,9 @@ import {logout} from "../features/Login/authReducer";
 function App({demo = false}: { demo?: boolean }) {
     const dispatch = useAppDispatch()
 
-    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const status = useSelector(selectAppStatus)
+    const isInitialized = useSelector(selectIsInitialized)
+    const isLoggedIn = useSelector(selectIsLoggedIn)
 
     useEffect(() => {
         dispatch(initializeApp())

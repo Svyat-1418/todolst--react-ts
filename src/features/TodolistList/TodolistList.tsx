@@ -1,6 +1,9 @@
 import React, {useCallback, useEffect} from "react";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../../App/store";
+import {useAppDispatch} from "../../App/store";
+import {selectIsLoggedIn} from "../auth/auth.selectors";
+import {selectTasks} from "./tasks.selectors";
+import {selectTodolists} from "./todolists.selectors";
 import {
   addTodolist,
   changeTodolistFilter,
@@ -26,9 +29,9 @@ import Paper from "@mui/material/Paper";
 import {Navigate} from "react-router-dom";
 
 export const TodolistList = ({demo = false}: { demo: boolean }) => {
-  const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-  const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+  const todolists = useSelector(selectTodolists)
+  const tasks = useSelector(selectTasks)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const dispatch = useAppDispatch()
 
