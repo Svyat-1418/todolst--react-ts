@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
 import {selectIsLoggedIn} from "../features/auth/auth.selectors";
 import {TodolistList} from "../features/TodolistList/TodolistList";
+import {Layout} from "../layout/Layout";
 import {selectAppStatus, selectIsInitialized} from "./app.selectors";
 
 import {initializeApp, RequestStatusType} from "./appReducer";
@@ -21,50 +22,34 @@ import {CircularProgress} from "@mui/material";
 import {logout} from "../features/Login/authReducer";
 
 function App({demo = false}: { demo?: boolean }) {
-    const dispatch = useAppDispatch()
-
-    const status = useSelector(selectAppStatus)
-    const isInitialized = useSelector(selectIsInitialized)
-    const isLoggedIn = useSelector(selectIsLoggedIn)
-
-    useEffect(() => {
-        dispatch(initializeApp())
-    }, [])
-
-    if (!isInitialized) {
-        return <div
-            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <CircularProgress/>
-        </div>
-    }
-
-
-    return (
-        <div className="App">
-            <ErrorSnackbar/>
-            <AppBar position={"static"}>
-                <Toolbar>
-                    <IconButton>
-                        <Menu style={{color: "white"}}/>
-                    </IconButton>
-                    <Typography variant={"body1"}>News</Typography>
-                    {isLoggedIn && <Button color={"inherit"} onClick={() => dispatch(logout())}>Log out</Button>}
-                </Toolbar>
-            </AppBar>
-
-            {status === "loading" && <LinearProgress color={"info"}/>}
-
-            <Container fixed>
-                <Routes>
-                    <Route path={"/"} element={<TodolistList demo={demo}/>} />
-                    <Route path={"login"} element={<Login/>} />_
-
-                    <Route path={"/404"} element={<h1>404 PAGE NOT FOUND</h1>}/>
-                    <Route path={"*"} element={<Navigate to={"/404"}/>}/>
-                </Routes>
-            </Container>
-        </div>
-    )
+  const dispatch = useAppDispatch()
+  
+  const isInitialized = useSelector(selectIsInitialized)
+  
+  useEffect(() => {
+    dispatch(initializeApp())
+  }, [])
+  
+  if (!isInitialized) {
+    return <div
+      style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+      <CircularProgress/>
+    </div>
+  }
+  
+  return (
+    <>
+      <Routes>
+        <Route path={"/"} element={<Layout/>}>
+          <Route index element={<TodolistList demo={demo}/>}/>
+          <Route path={"login"} element={<Login/>}/>
+          
+          <Route path={"/404"} element={<h1>404 PAGE NOT FOUND</h1>}/>
+          <Route path={"*"} element={<Navigate to={"/404"}/>}/>
+        </Route>_
+      </Routes>
+    </>
+  )
 }
 
 export default App
