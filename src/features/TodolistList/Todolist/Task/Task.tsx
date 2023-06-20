@@ -33,7 +33,7 @@ export const Task: FC<PropsType> = memo(({task}) => {
     }, [updateTask, task.id, task.todoListId])
 
     return (
-        <div>
+        <li>
             <Checkbox disabled={task.entityStatus === "loading"}
                       onChange={handleUpdateTaskStatus}
                       checked={task.status === TaskStatuses.Completed}
@@ -45,6 +45,6 @@ export const Task: FC<PropsType> = memo(({task}) => {
             <IconButton disabled={task.entityStatus === "loading"} onClick={handleRemoveTask}>
                 <Delete color={"error"}/>
             </IconButton>
-        </div>
+        </li>
     )
 })
