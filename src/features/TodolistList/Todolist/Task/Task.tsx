@@ -1,6 +1,7 @@
 import {ChangeEvent, FC, memo, useCallback} from "react";
 import Checkbox from "@mui/material/Checkbox";
-import {useAppDispatch} from "../../../../App/store";
+
+import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";

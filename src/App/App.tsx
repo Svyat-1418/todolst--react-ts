@@ -7,13 +7,14 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
+import {useAppDispatch} from "../common/hooks/useAppDispatch";
 import {selectIsLoggedIn} from "../features/auth/auth.selectors";
 import {TodolistList} from "../features/TodolistList/TodolistList";
 import {Layout} from "../layout/Layout";
 import {selectAppStatus, selectIsInitialized} from "./app.selectors";
 
 import {initializeApp, RequestStatusType} from "./appReducer";
-import {AppRootStateType, useAppDispatch} from "./store";
+import {AppRootStateType} from "./store";
 import {useSelector} from "react-redux";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "../features/Login/Login";

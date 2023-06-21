@@ -1,5 +1,6 @@
 import {FC, memo, useCallback} from "react";
-import {useAppDispatch} from "../../../App/store";
+
+import {useAppDispatch} from "../../../common/hooks/useAppDispatch";
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {addTask} from "../tasksReducer";
 import {TodolistDomainType} from "../todolistsReducer";

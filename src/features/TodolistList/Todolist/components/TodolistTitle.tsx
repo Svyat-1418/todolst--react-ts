@@ -2,7 +2,8 @@ import Delete from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import {FC, useCallback} from "react";
 import {RequestStatusType} from "../../../../App/appReducer";
-import {useAppDispatch} from "../../../../App/store";
+
+import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {changeTodolistTitle, removeTodolist} from "../../todolistsReducer";
 

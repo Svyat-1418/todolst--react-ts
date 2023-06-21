@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import {FC, useCallback} from "react";
-import {useAppDispatch} from "../../../../App/store";
+
+import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
 import {changeTodolistFilter, FilterValuesType} from "../../todolistsReducer";
 
 type PropsType = {

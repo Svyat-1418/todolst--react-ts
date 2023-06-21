@@ -9,7 +9,8 @@ import Typography from "@mui/material/Typography";
 import {useSelector} from "react-redux";
 import {Outlet} from "react-router-dom";
 import {selectAppStatus} from "../App/app.selectors";
-import {useAppDispatch} from "../App/store";
+
+import {useAppDispatch} from "../common/hooks/useAppDispatch";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {selectIsLoggedIn} from "../features/auth/auth.selectors";
 import {logout} from "../features/Login/authReducer";

@@ -1,6 +1,7 @@
 import React, {FC, useCallback, useEffect} from "react";
 import {useSelector} from "react-redux";
-import {useAppDispatch} from "../../App/store";
+
+import {useAppDispatch} from "../../common/hooks/useAppDispatch";
 import {selectIsLoggedIn} from "../auth/auth.selectors";
 import {selectTodolists} from "./todolists.selectors";
 import {
