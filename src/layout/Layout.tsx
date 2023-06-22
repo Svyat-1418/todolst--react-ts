@@ -9,17 +9,20 @@ import Typography from "@mui/material/Typography";
 import {useSelector} from "react-redux";
 import {Outlet} from "react-router-dom";
 import {selectAppStatus} from "../App/app.selectors";
+import {useActions} from "../common/hooks/useActions";
 
 import {useAppDispatch} from "../common/hooks/useAppDispatch";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {selectIsLoggedIn} from "../features/auth/auth.selectors";
-import {logout} from "../features/Login/authReducer";
+import {authThunks} from "../features/Login/authReducer";
 
 export const Layout = () => {
-  const dispatch = useAppDispatch()
+  const {logout} = useActions(authThunks)
   
   const status = useSelector(selectAppStatus)
   const isLoggedIn = useSelector(selectIsLoggedIn)
+  
+  const handleLogout = () => logout({})
   
   return (
     <>
@@ -31,7 +34,7 @@ export const Layout = () => {
           </IconButton>
           <Typography variant={"body1"}>News</Typography>
           {isLoggedIn &&
-            <Button color={"inherit"} onClick={() => dispatch(logout())}>Log out</Button>}
+            <Button color={"inherit"} onClick={handleLogout}>Log out</Button>}
         </Toolbar>
       </AppBar>
       

@@ -1,19 +1,17 @@
 import Button from "@mui/material/Button";
 import {FC, useCallback} from "react";
-
-import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
-import {changeTodolistFilter, FilterValuesType} from "../../todolistsReducer";
-
+import {useActions} from "../../../../common/hooks/useActions";
+import {FilterValuesType, todolistsActions} from "../../todolistsReducer";
 type PropsType = {
   todolistId: string
   todolistFilter: FilterValuesType
 }
 
 export const TaskFilterButtons: FC<PropsType> = ({todolistFilter, todolistId}) => {
-  const dispatch = useAppDispatch()
+  const {changeTodolistFilter} = useActions(todolistsActions)
   
   const handleTodolistFilter = useCallback((filter: FilterValuesType) => {
-    dispatch(changeTodolistFilter({id: todolistId, filter}))
+    changeTodolistFilter({id: todolistId, filter})
   }, [changeTodolistFilter, todolistId])
   
   return (

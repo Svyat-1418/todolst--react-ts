@@ -2,10 +2,9 @@ import Delete from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import {FC, useCallback} from "react";
 import {RequestStatusType} from "../../../../App/appReducer";
-
-import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
+import {useActions} from "../../../../common/hooks/useActions";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
-import {changeTodolistTitle, removeTodolist} from "../../todolistsReducer";
+import {todolistsThunks} from "../../todolistsReducer";
 
 type PropsType = {
   todolistId: string
@@ -13,14 +12,14 @@ type PropsType = {
   entityStatus: RequestStatusType
 }
 export const TodolistTitle: FC<PropsType> = ({title, entityStatus, todolistId}) => {
-  const dispatch = useAppDispatch()
+  const {changeTodolistTitle, removeTodolist} = useActions(todolistsThunks)
   
   const handleRemoveTodolist = useCallback(() => {
-    dispatch(removeTodolist({id: todolistId}))
+    removeTodolist({id: todolistId})
   }, [removeTodolist, todolistId])
   
   const changeTodolistTitleCallback = useCallback((title: string) => {
-    dispatch(changeTodolistTitle({id: todolistId, title}))
+    changeTodolistTitle({id: todolistId, title})
   }, [changeTodolistTitle, todolistId])
   
   return (

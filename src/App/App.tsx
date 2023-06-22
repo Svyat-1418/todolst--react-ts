@@ -1,34 +1,21 @@
-import React, {useEffect} from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import LinearProgress from "@mui/material/LinearProgress";
-import {useAppDispatch} from "../common/hooks/useAppDispatch";
-import {selectIsLoggedIn} from "../features/auth/auth.selectors";
+import {useEffect} from "react";
+import {useActions} from "../common/hooks/useActions";
 import {TodolistList} from "../features/TodolistList/TodolistList";
 import {Layout} from "../layout/Layout";
-import {selectAppStatus, selectIsInitialized} from "./app.selectors";
-
-import {initializeApp, RequestStatusType} from "./appReducer";
-import {AppRootStateType} from "./store";
+import {selectIsInitialized} from "./app.selectors";
 import {useSelector} from "react-redux";
-import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
-import {logout} from "../features/Login/authReducer";
+import {authThunks} from "../features/Login/authReducer";
 
 function App({demo = false}: { demo?: boolean }) {
-  const dispatch = useAppDispatch()
+  const {initializeApp} = useActions(authThunks)
   
   const isInitialized = useSelector(selectIsInitialized)
   
   useEffect(() => {
-    dispatch(initializeApp())
+    initializeApp({})
   }, [])
   
   if (!isInitialized) {

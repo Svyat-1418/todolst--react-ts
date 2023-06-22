@@ -1,36 +1,32 @@
 import {ChangeEvent, FC, memo, useCallback} from "react";
 import Checkbox from "@mui/material/Checkbox";
-
-import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
+import {useActions} from "../../../../common/hooks/useActions";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import {TaskStatuses} from "../../../../api/todolistAPI";
-import {
-  removeTask,
-  TaskDomainType,
-  updateTask
+import {tasksThunks, TaskDomainType,
 } from "../../tasksReducer";
 
 type PropsType = {
   task: TaskDomainType
 }
 export const Task: FC<PropsType> = memo(({task}) => {
-  const dispatch = useAppDispatch()
+  const {removeTask, updateTask} = useActions(tasksThunks)
 
     const handleRemoveTask = useCallback(() => {
-      dispatch(removeTask({id: task.id, todolistId: task.todoListId}))
+      removeTask({id: task.id, todolistId: task.todoListId})
     }, [removeTask, task.id, task.todoListId])
   
     const handleUpdateTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const status = e.currentTarget.checked
             ? TaskStatuses.Completed
             : TaskStatuses.New
-        dispatch(updateTask({ id: task.id, todolistId: task.todoListId, domainModel: {status} }))
+        updateTask({ id: task.id, todolistId: task.todoListId, domainModel: {status} })
     }, [updateTask, task.id, task.todoListId])
   
     const handleUpdateTaskTitle = useCallback((title: string) => {
-      dispatch(updateTask({id: task.id, todolistId: task.todoListId, domainModel: {title}}))
+      updateTask({id: task.id, todolistId: task.todoListId, domainModel: {title}})
     }, [updateTask, task.id, task.todoListId])
 
     return (

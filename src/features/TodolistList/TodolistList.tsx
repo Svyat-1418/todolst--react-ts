@@ -1,13 +1,10 @@
 import React, {FC, useCallback, useEffect} from "react";
 import {useSelector} from "react-redux";
+import {useActions} from "../../common/hooks/useActions";
 
-import {useAppDispatch} from "../../common/hooks/useAppDispatch";
 import {selectIsLoggedIn} from "../auth/auth.selectors";
 import {selectTodolists} from "./todolists.selectors";
-import {
-  addTodolist,
-  fetchTodolists
-} from "./todolistsReducer";
+import {todolistsThunks} from "./todolistsReducer";
 
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
@@ -20,19 +17,19 @@ export const TodolistList: FC<{ demo: boolean }> = ({demo = false}) => {
   const todolists = useSelector(selectTodolists)
   const isLoggedIn = useSelector(selectIsLoggedIn)
 
-  const dispatch = useAppDispatch()
+  const {addTodolist, fetchTodolists} = useActions(todolistsThunks)
 
   useEffect(() => {
     if (demo || !isLoggedIn) {
       return;
     }
-    dispatch(fetchTodolists())
-  }, [dispatch, demo, isLoggedIn])
+    fetchTodolists({})
+  }, [demo, isLoggedIn])
 
   
   const addTodolistCallback = useCallback((title: string) => {
-    dispatch(addTodolist(title))
-  }, [dispatch])
+    addTodolist(title)
+  }, [])
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"}/>
