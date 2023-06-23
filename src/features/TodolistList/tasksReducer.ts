@@ -1,13 +1,12 @@
+import {createAppAsyncThunk} from "../../common/utils/createAppAsyncThunk";
+import {handleServerAppError, handleServerNetworkError} from "../../common/utils/errorUtils";
 import {todolistsThunks} from "./todolistsReducer";
 import {ResultCode, TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolistAPI";
-import {AppRootStateType} from "../../App/store";
 import {appActions, RequestStatusType} from "../../App/appReducer";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
 import {AxiosError} from "axios";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const fetchTasks = createAsyncThunk<
-  { todolistId: string, tasks: TaskType[] },
+const fetchTasks = createAppAsyncThunk<{ todolistId: string, tasks: TaskType[] },
   { todolistId: string }>("tasks/fetchTasks",
   async (payload, thunkAPI) => {
     thunkAPI.dispatch(appActions.setAppStatus({status: "loading"}))
@@ -20,7 +19,7 @@ const fetchTasks = createAsyncThunk<
     }
   })
 
-const addTask = createAsyncThunk<
+const addTask = createAppAsyncThunk<
   { task: TaskType },
   { todolistId: string, title: string }>("tasks/addTask",
   async (payload, thunkAPI) => {
@@ -38,7 +37,7 @@ const addTask = createAsyncThunk<
     }
   })
 
-const removeTask = createAsyncThunk<
+const removeTask = createAppAsyncThunk<
   { id: string, todolistId: string },
   { id: string, todolistId: string }>("tasks/removeTask",
   async (payload, thunkAPI) => {
@@ -57,10 +56,10 @@ const removeTask = createAsyncThunk<
     }
   })
 
-const updateTask = createAsyncThunk<
+const updateTask = createAppAsyncThunk<
   { id: string, todolistId: string, domainModel: UpdateDomainTaskModelType },
-  { id: string, todolistId: string, domainModel: UpdateDomainTaskModelType },
-  {state: AppRootStateType}>("tasks/updateTask",
+  { id: string, todolistId: string, domainModel: UpdateDomainTaskModelType }
+  >("tasks/updateTask",
   async (payload, thunkAPI) => {
     thunkAPI.dispatch(appActions.setAppStatus({status: "loading"}))
     thunkAPI.dispatch(tasksActions.changeTaskEntityStatus({id: payload.id, todolistId: payload.todolistId, entityStatus: "loading"}))

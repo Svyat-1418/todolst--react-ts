@@ -1,11 +1,12 @@
 import {ResultCode, todolistAPI, TodolistType} from "../../api/todolistAPI";
 import {appActions, RequestStatusType} from "../../App/appReducer";
-import {handleServerAppError, handleServerNetworkError, ThunkError} from "../../utils/errorUtils";
+import {createAppAsyncThunk} from "../../common/utils/createAppAsyncThunk";
 import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "../../common/utils/errorUtils";
 import {tasksThunks} from "./tasksReducer";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const fetchTodolists = createAsyncThunk<{ todolists: TodolistType[] }>("todolists/fetchTodolists",
+const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>("todolists/fetchTodolists",
   async (_, thunkAPI) => {
     thunkAPI.dispatch(appActions.setAppStatus({status: "loading"}))
     try {
@@ -19,8 +20,8 @@ const fetchTodolists = createAsyncThunk<{ todolists: TodolistType[] }>("todolist
     }
   })
 
-const addTodolist = createAsyncThunk<
-  { todolist: TodolistType }, string, ThunkError>('todolists/addTodolist',
+const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>(
+  'todolists/addTodolist',
   async (title, thunkAPI) => {
   thunkAPI.dispatch(appActions.setAppStatus({status: 'loading'}))
   try {
@@ -36,7 +37,8 @@ const addTodolist = createAsyncThunk<
   }
 })
 
-const removeTodolist = createAsyncThunk<{ id: string }, { id: string }>("todolists/removeTodolist",
+const removeTodolist = createAppAsyncThunk<{ id: string }, { id: string }>(
+  "todolists/removeTodolist",
   async (payload, thunkAPI) => {
     thunkAPI.dispatch(appActions.setAppStatus({status: "loading"}))
     thunkAPI.dispatch(todolistsActions.changeTodolistEntityStatus({id: payload.id, entityStatus: "loading"}))
@@ -49,8 +51,7 @@ const removeTodolist = createAsyncThunk<{ id: string }, { id: string }>("todolis
     }
   })
 
-const changeTodolistTitle = createAsyncThunk<
-  {id: string, title: string}, {id: string, title: string}>("todolists/changeTodolistTitle",
+const changeTodolistTitle = createAppAsyncThunk<{id: string, title: string}, {id: string, title: string}>("todolists/changeTodolistTitle",
   async (payload, thunkAPI) => {
     thunkAPI.dispatch(appActions.setAppStatus({status: "loading"}))
     thunkAPI.dispatch(todolistsActions.changeTodolistEntityStatus({id: payload.id, entityStatus: "loading"}))

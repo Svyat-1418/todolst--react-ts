@@ -1,10 +1,11 @@
 import {authAPI, LoginParamsType, ResultCode} from "../../api/todolistAPI";
 import {appActions} from "../../App/appReducer";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
+import {createAppAsyncThunk} from "../../common/utils/createAppAsyncThunk";
+import {handleServerAppError, handleServerNetworkError} from "../../common/utils/errorUtils";
 
-const login = createAsyncThunk<void, LoginParamsType>("auth/login",
+const login = createAppAsyncThunk<void, LoginParamsType>("auth/login",
   async (payload, thunkAPI) => {
     thunkAPI.dispatch(appActions.setAppStatus({status: 'loading'}))
     try {
@@ -19,7 +20,7 @@ const login = createAsyncThunk<void, LoginParamsType>("auth/login",
     }
   })
 
-const logout = createAsyncThunk("auth/logout",
+const logout = createAppAsyncThunk("auth/logout",
   async (_, thunkAPI) => {
     thunkAPI.dispatch(appActions.setAppStatus({status: 'loading'}))
     try {
@@ -35,7 +36,7 @@ const logout = createAsyncThunk("auth/logout",
     }
   })
 
-const initializeApp = createAsyncThunk("app/initializeApp",
+const initializeApp = createAppAsyncThunk("app/initializeApp",
   async (_, thunkAPI) => {
     try {
       const res = await authAPI.me()

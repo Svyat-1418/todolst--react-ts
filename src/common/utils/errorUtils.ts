@@ -40,9 +40,9 @@
 
 
 
-import {appActions} from '../App/appReducer';
+import {appActions} from '../../App/appReducer';
 import {AxiosError} from 'axios'
-import {FieldErrorType, ResponseType} from "../api/todolistAPI"
+import {FieldErrorType, ResponseType} from "../../api/todolistAPI"
 
 // original type:
 // BaseThunkAPI<S, E, D extends Dispatch = Dispatch, RejectedValue = undefined>
