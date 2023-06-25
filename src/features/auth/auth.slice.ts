@@ -1,9 +1,10 @@
-import {authAPI, LoginParamsType, ResultCode} from "../../api/todolistAPI";
-import {appActions} from "../../App/appReducer";
 import {createSlice} from "@reduxjs/toolkit";
+import {appActions} from "../../app/app.slice";
+import {ResultCode} from "../../common/enums/common.enums";
 import {createAppAsyncThunk} from "../../common/utils/createAppAsyncThunk";
 import {handleServerAppError} from "../../common/utils/handleServerAppError";
 import {thunkTryCatch} from "../../common/utils/thunkTryCatch";
+import {authAPI, LoginParamsType} from "./auth.api";
 
 const login = createAppAsyncThunk<void, LoginParamsType>("auth/login",
   async (payload, thunkAPI) => {
@@ -43,7 +44,7 @@ const initializeApp = createAppAsyncThunk("app/initializeApp",
     })
   })
 
-const authSlice = createSlice({
+const slice = createSlice({
   name: "auth",
   initialState: {
     isLoggedIn: false
@@ -64,6 +65,6 @@ const authSlice = createSlice({
   }
 })
 
-export const {reducer: authReducer} = authSlice
+export const {reducer: authReducer} = slice
 export const authThunks = {login, logout, initializeApp}
 

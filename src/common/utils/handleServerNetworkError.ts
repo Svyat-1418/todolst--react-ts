@@ -1,6 +1,6 @@
 import axios, {AxiosError} from "axios";
 import {Dispatch} from "redux";
-import {appActions} from "../../App/appReducer";
+import {appActions} from "../../app/app.slice";
 /**
  * Handles network errors that occur when sending requests to the server
  * @param {unknown} e - Error, which occurred when sending requests to the server

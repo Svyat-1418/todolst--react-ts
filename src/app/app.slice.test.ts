@@ -1,4 +1,5 @@
-import {appReducer, RequestStatusType, appActions} from "./appReducer";
+import {appActions, appReducer, RequestStatusType} from "./app.slice"
+
 
 let startState: {
     status: RequestStatusType,

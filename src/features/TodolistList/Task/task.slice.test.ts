@@ -1,12 +1,12 @@
+import {TaskPriorities, TaskStatuses} from "../../../common/enums/common.enums";
 import {
     tasksActions,
     tasksThunks,
     tasksReducer,
     TasksStateType, UpdateDomainTaskModelType,
-} from './tasksReducer';
-import {todolistsThunks} from "./todolistsReducer";
-import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../../api/todolistAPI";
-import {RequestStatusType} from "../../App/appReducer";
+} from './task.slice';
+import {todolistsThunks} from "../Todolist/todolist.slice";
+import {RequestStatusType} from "../../../app/app.slice";
 
 let startState: TasksStateType
 

@@ -1,10 +1,11 @@
-import {ResultCode, todolistAPI, TodolistType} from "../../api/todolistAPI";
-import {appActions, RequestStatusType} from "../../App/appReducer";
-import {createAppAsyncThunk} from "../../common/utils/createAppAsyncThunk";
-import {handleServerAppError} from "../../common/utils/handleServerAppError";
-import {thunkTryCatch} from "../../common/utils/thunkTryCatch";
-import {tasksThunks} from "./tasksReducer";
+import {RequestStatusType} from "../../../app/app.slice";
+import {ResultCode} from "../../../common/enums/common.enums";
+import {createAppAsyncThunk} from "../../../common/utils/createAppAsyncThunk";
+import {handleServerAppError} from "../../../common/utils/handleServerAppError";
+import {thunkTryCatch} from "../../../common/utils/thunkTryCatch";
+import {tasksThunks} from "../Task/task.slice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {todolistAPI, TodolistType} from "./todolist.api";
 
 const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>(
   "todolists/fetchTodolists",
@@ -73,15 +74,19 @@ const changeTodolistTitle = createAppAsyncThunk<
     })
   })
 
-const todosSlice = createSlice({
+const slice = createSlice({
   name: "todos",
   initialState: [] as Array<TodolistDomainType>,
   reducers: {
-    changeTodolistFilter: (state, action: PayloadAction<{ id: string, filter: FilterValuesType }>) => {
+    changeTodolistFilter: (state, action: PayloadAction<
+      { id: string, filter: FilterValuesType }>
+    ) => {
       const index = state.findIndex(tl => tl.id === action.payload.id)
       state[index].filter = action.payload.filter
     },
-    changeTodolistEntityStatus: (state, action: PayloadAction<{ id: string, entityStatus: RequestStatusType }>) => {
+    changeTodolistEntityStatus: (state, action: PayloadAction<
+      { id: string, entityStatus: RequestStatusType }>
+    ) => {
       const index = state.findIndex(tl => tl.id === action.payload.id)
       state[index].entityStatus = action.payload.entityStatus
     },
@@ -110,7 +115,7 @@ const todosSlice = createSlice({
   }
 })
 
-export const {reducer: todolistsReducer, actions: todolistsActions} = todosSlice
+export const {reducer: todolistsReducer, actions: todolistsActions} = slice
 export const todolistsThunks = { addTodolist, changeTodolistTitle, fetchTodolists, removeTodolist }
 
 export type FilterValuesType = "all" | "active" | "completed"

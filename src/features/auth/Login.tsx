@@ -9,11 +9,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {useSelector} from "react-redux";
-import {LoginParamsType} from "../../api/todolistAPI";
 import {useActions} from "../../common/hooks/useActions";
 import {useAppDispatch} from "../../common/hooks/useAppDispatch";
 import {selectIsLoggedIn} from "../auth/auth.selectors";
-import {authThunks} from "./authReducer";
+import {LoginParamsType} from "./auth.api";
+import {authThunks} from "./auth.slice";
 import {Navigate} from "react-router-dom";
 
 type FormikErrorType = {

@@ -1,6 +1,7 @@
-import { AppDispatch, AppRootStateType } from '../../App/store';
+import { AppDispatch, AppRootStateType } from '../../app/store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ResponseType } from '../../api/todolistAPI';
+
+import {CommonResponseType} from "../types/common.types";
 
 /**
  * This function avoids duplication when typing ThunkAPiConfig
@@ -10,5 +11,5 @@ import { ResponseType } from '../../api/todolistAPI';
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: AppRootStateType
   dispatch: AppDispatch
-  rejectValue: null | ResponseType
+  rejectValue: null | CommonResponseType
 }>()

@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import {FC, useCallback} from "react";
 import {useActions} from "../../../../common/hooks/useActions";
-import {FilterValuesType, todolistsActions} from "../../todolistsReducer";
+import {FilterValuesType, todolistsActions} from "../todolist.slice";
 type PropsType = {
   todolistId: string
   todolistFilter: FilterValuesType

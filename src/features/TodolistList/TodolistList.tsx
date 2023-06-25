@@ -3,10 +3,10 @@ import {useSelector} from "react-redux";
 import {useActions} from "../../common/hooks/useActions";
 
 import {selectIsLoggedIn} from "../auth/auth.selectors";
-import {selectTodolists} from "./todolists.selectors";
-import {todolistsThunks} from "./todolistsReducer";
+import {selectTodolists} from "./Todolist/todolists.selectors";
+import {todolistsThunks} from "./Todolist/todolist.slice";
 
-import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
+import {AddItemForm} from "../../common/components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 
 import Grid from "@mui/material/Grid";

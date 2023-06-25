@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
-import {store} from "./App/store"
-import App from "./App/App";
+import {store} from "./app/store"
+import App from "./app/App";
 import {HashRouter} from "react-router-dom";
 
 const root = ReactDOM.createRoot(

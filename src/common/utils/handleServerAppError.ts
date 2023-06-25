@@ -1,8 +1,8 @@
 import {Dispatch} from "redux";
-import {ResponseType} from "../../api/todolistAPI";
-import {appActions} from "../../App/appReducer";
+import {appActions} from "../../app/app.slice";
+import {CommonResponseType} from "../types/common.types";
 
-export const handleServerAppError = <D>(data: ResponseType<D>,
+export const handleServerAppError = <D>(data: CommonResponseType<D>,
                                         dispatch: Dispatch,
                                         showError = true) => {
   if (showError) {

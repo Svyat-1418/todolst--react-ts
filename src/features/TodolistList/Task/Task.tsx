@@ -1,12 +1,11 @@
 import {ChangeEvent, FC, memo, useCallback} from "react";
 import Checkbox from "@mui/material/Checkbox";
-import {useActions} from "../../../../common/hooks/useActions";
-import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
+import {TaskStatuses} from "../../../common/enums/common.enums";
+import {useActions} from "../../../common/hooks/useActions";
+import {EditableSpan} from "../../../common/components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {TaskStatuses} from "../../../../api/todolistAPI";
-import {tasksThunks, TaskDomainType,
-} from "../../tasksReducer";
+import {TaskDomainType, tasksThunks} from "./task.slice";
 
 type PropsType = {
   task: TaskDomainType

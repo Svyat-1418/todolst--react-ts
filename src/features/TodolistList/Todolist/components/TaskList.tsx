@@ -1,9 +1,10 @@
 import {FC} from "react";
 import {useSelector} from "react-redux";
-import {TaskStatuses} from "../../../../api/todolistAPI";
-import {selectTasks} from "../../tasks.selectors";
-import {FilterValuesType} from "../../todolistsReducer";
-import {Task} from "../Task/Task";
+
+import {TaskStatuses} from "../../../../common/enums/common.enums";
+import {selectTasks} from "../../Task/tasks.selectors";
+import {FilterValuesType} from "../todolist.slice";
+import {Task} from "../../Task/Task";
 
 type PropsType = {
   todolistId: string

@@ -1,11 +1,11 @@
 import {FC, memo, useCallback} from "react";
 import {useActions} from "../../../common/hooks/useActions";
-import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
-import {tasksThunks} from "../tasksReducer";
-import {TodolistDomainType} from "../todolistsReducer";
+import {AddItemForm} from "../../../common/components/AddItemForm/AddItemForm";
+import {tasksThunks} from "../Task/task.slice";
 import {TaskFilterButtons} from "./components/TaskFilterButtons";
 import {TaskList} from "./components/TaskList";
 import {TodolistTitle} from "./components/TodolistTitle";
+import {TodolistDomainType} from "./todolist.slice";
 
 type PropsType = {
   todolist: TodolistDomainType

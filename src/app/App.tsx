@@ -1,13 +1,13 @@
 import {useEffect} from "react";
 import {useActions} from "../common/hooks/useActions";
 import {TodolistList} from "../features/TodolistList/TodolistList";
-import {Layout} from "../layout/Layout";
+import {Layout} from "./Layout";
 import {selectIsInitialized} from "./app.selectors";
 import {useSelector} from "react-redux";
-import {Login} from "../features/Login/Login";
+import {Login} from "../features/auth/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
-import {authThunks} from "../features/Login/authReducer";
+import {authThunks} from "../features/auth/auth.slice";
 
 function App({demo = false}: { demo?: boolean }) {
   const {initializeApp} = useActions(authThunks)

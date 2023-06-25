@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authThunks} from "../features/Login/authReducer";
+import {authThunks} from "../features/auth/auth.slice";
 
-const appSlice = createSlice({
+const slice = createSlice({
   name: "app",
   initialState: {
     status: "idle" as RequestStatusType,
@@ -26,6 +26,6 @@ const appSlice = createSlice({
   }
 })
 
-export const {reducer: appReducer, actions: appActions} = appSlice
+export const {reducer: appReducer, actions: appActions} = slice
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"

@@ -8,13 +8,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import {useSelector} from "react-redux";
 import {Outlet} from "react-router-dom";
-import {selectAppStatus} from "../App/app.selectors";
 import {useActions} from "../common/hooks/useActions";
-
-import {useAppDispatch} from "../common/hooks/useAppDispatch";
-import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {ErrorSnackbar} from "../common/components/ErrorSnackbar/ErrorSnackbar";
 import {selectIsLoggedIn} from "../features/auth/auth.selectors";
-import {authThunks} from "../features/Login/authReducer";
+import {authThunks} from "../features/auth/auth.slice";
+import {selectAppStatus} from "./app.selectors";
 
 export const Layout = () => {
   const {logout} = useActions(authThunks)

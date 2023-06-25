@@ -2,9 +2,9 @@ import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, {AlertProps} from '@mui/material/Alert'
 import {FC, forwardRef, SyntheticEvent} from "react";
 import {useSelector} from "react-redux";
-import {selectAppError} from "../../App/app.selectors";
-import {appActions} from "../../App/appReducer";
-import {useActions} from "../../common/hooks/useActions";
+import {selectAppError} from "../../../app/app.selectors";
+import {appActions} from "../../../app/app.slice";
+import {useActions} from "../../hooks/useActions";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props, ref) {

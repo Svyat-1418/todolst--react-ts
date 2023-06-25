@@ -1,16 +1,17 @@
-import {createAppAsyncThunk} from "../../common/utils/createAppAsyncThunk";
-import {handleServerAppError} from "../../common/utils/handleServerAppError";
-import {thunkTryCatch} from "../../common/utils/thunkTryCatch";
-import {todolistsThunks} from "./todolistsReducer";
-import {ResultCode, TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolistAPI";
-import {appActions, RequestStatusType} from "../../App/appReducer";
+import {ResultCode} from "../../../common/enums/common.enums";
+import {createAppAsyncThunk} from "../../../common/utils/createAppAsyncThunk";
+import {handleServerAppError} from "../../../common/utils/handleServerAppError";
+import {thunkTryCatch} from "../../../common/utils/thunkTryCatch";
+import {todolistsThunks} from "../Todolist/todolist.slice";
+import {appActions, RequestStatusType} from "../../../app/app.slice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {taskAPI, TaskType, UpdateTaskModelType} from "./task.api";
 
 const fetchTasks = createAppAsyncThunk<{ todolistId: string, tasks: TaskType[] },
   { todolistId: string }>("tasks/fetchTasks",
   async (payload, thunkAPI) => {
     return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistAPI.getTasks(payload.todolistId)
+      const res = await taskAPI.getTasks(payload.todolistId)
       return {todolistId: payload.todolistId, tasks: res.data.items}
     })
   })
@@ -21,7 +22,7 @@ const addTask = createAppAsyncThunk<
   async (payload, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistAPI.createTask(payload.todolistId, payload.title)
+      const res = await taskAPI.createTask(payload.todolistId, payload.title)
       if (res.data.resultCode === ResultCode.success) {
         return {task: res.data.data.item}
       } else {
@@ -39,7 +40,7 @@ const removeTask = createAppAsyncThunk<
     dispatch(tasksActions.changeTaskEntityStatus(
       {id: payload.id, todolistId: payload.todolistId, entityStatus: "loading"}))
     return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistAPI.deleteTask(payload.id, payload.todolistId)
+      const res = await taskAPI.deleteTask(payload.id, payload.todolistId)
       if (res.data.resultCode === ResultCode.success) {
         return {id: payload.id, todolistId: payload.todolistId}
       } else {
@@ -77,7 +78,7 @@ const updateTask = createAppAsyncThunk<
         ...payload.domainModel
       }
       
-      const res = await todolistAPI.updateTask(payload.id, payload.todolistId, apiModel)
+      const res = await taskAPI.updateTask(payload.id, payload.todolistId, apiModel)
       if (res.data.resultCode === ResultCode.success) {
         dispatch(tasksActions.changeTaskEntityStatus({
           id: payload.id,
@@ -92,7 +93,7 @@ const updateTask = createAppAsyncThunk<
     })
   })
 
-const tasksSlice = createSlice({
+const slice = createSlice({
   name: "tasks",
   initialState: {} as TasksStateType,
   reducers: {
@@ -143,17 +144,10 @@ const tasksSlice = createSlice({
   }
 })
 
-export const { reducer: tasksReducer, actions:  tasksActions} = tasksSlice
+export const { reducer: tasksReducer, actions:  tasksActions} = slice
 export const tasksThunks = {addTask, fetchTasks, removeTask, updateTask}
 
 export type TaskDomainType = TaskType & { entityStatus: RequestStatusType }
 export type TasksStateType =
   { [key: string]: Array<TaskDomainType> }
-export type UpdateDomainTaskModelType = {
-  title?: string
-  description?: string | null
-  status?: number
-  priority?: number
-  startDate?: string | null
-  deadline?: string | null
-}
+export type UpdateDomainTaskModelType = Partial<UpdateTaskModelType>

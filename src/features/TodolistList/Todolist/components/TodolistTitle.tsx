@@ -1,10 +1,10 @@
 import Delete from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import {FC, useCallback} from "react";
-import {RequestStatusType} from "../../../../App/appReducer";
+import {RequestStatusType} from "../../../../app/app.slice";
 import {useActions} from "../../../../common/hooks/useActions";
-import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
-import {todolistsThunks} from "../../todolistsReducer";
+import {EditableSpan} from "../../../../common/components/EditableSpan/EditableSpan";
+import {todolistsThunks} from "../todolist.slice";
 
 type PropsType = {
   todolistId: string

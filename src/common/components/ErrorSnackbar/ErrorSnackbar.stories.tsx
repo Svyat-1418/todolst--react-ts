@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import {ErrorSnackbar} from "./ErrorSnackbar";
-import {ReduxStoreProviderDecorator} from "../../stories/decorators/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "../../../stories/decorators/ReduxStoreProviderDecorator";
 
 
 export default {
