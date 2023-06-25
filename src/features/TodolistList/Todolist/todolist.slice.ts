@@ -3,7 +3,7 @@ import {ResultCode} from "../../../common/enums/common.enums";
 import {createAppAsyncThunk} from "../../../common/utils/createAppAsyncThunk";
 import {handleServerAppError} from "../../../common/utils/handleServerAppError";
 import {thunkTryCatch} from "../../../common/utils/thunkTryCatch";
-import {tasksThunks} from "../Task/task.slice";
+import {taskThunks} from "../Task/task.slice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {todolistAPI, TodolistType} from "./todolist.api";
 
@@ -14,7 +14,7 @@ const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>(
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistAPI.getTodolists()
       const todolists = res.data
-      todolists.forEach(tl => dispatch(tasksThunks.fetchTasks({todolistId: tl.id})))
+      todolists.forEach(tl => dispatch(taskThunks.fetchTasks({todolistId: tl.id})))
       return {todolists}
     })
   })

@@ -1,7 +1,7 @@
 import {FC, memo, useCallback} from "react";
 import {useActions} from "../../../common/hooks/useActions";
 import {AddItemForm} from "../../../common/components/AddItemForm/AddItemForm";
-import {tasksThunks} from "../Task/task.slice";
+import {taskThunks} from "../Task/task.slice";
 import {TaskFilterButtons} from "./components/TaskFilterButtons";
 import {TaskList} from "./components/TaskList";
 import {TodolistTitle} from "./components/TodolistTitle";
@@ -12,7 +12,7 @@ type PropsType = {
 }
 
 export const Todolist: FC<PropsType> = memo(({todolist}) => {
-  const {addTask} = useActions(tasksThunks)
+  const {addTask} = useActions(taskThunks)
   
   const addTaskCallback = useCallback((title: string) => {
     addTask({todolistId: todolist.id, title})

@@ -1,9 +1,9 @@
 import {TaskPriorities, TaskStatuses} from "../../../common/enums/common.enums";
 import {
     tasksActions,
-    tasksThunks,
+    taskThunks,
     tasksReducer,
-    TasksStateType, UpdateDomainTaskModelType,
+    TasksStateType, UpdateTaskDomainModelType,
 } from './task.slice';
 import {todolistsThunks} from "../Todolist/todolist.slice";
 import {RequestStatusType} from "../../../app/app.slice";
@@ -38,7 +38,7 @@ beforeEach(() => {
 })
 
 test('correct tasks for current todolist should be set', () => {
-    const action = tasksThunks.fetchTasks.fulfilled({
+    const action = taskThunks.fetchTasks.fulfilled({
         tasks: startState['todolistId1'],
         todolistId: 'todolistId1'
     }, 'requestId', {todolistId: 'todolistId1'})
@@ -53,7 +53,7 @@ test('correct tasks for current todolist should be set', () => {
 })
 test('correct task should be deleted from correct array', () => {
     const payload = {id: '2', todolistId: 'todolistId2'}
-    const action = tasksThunks.removeTask.fulfilled(payload, 'requestId', payload)
+    const action = taskThunks.removeTask.fulfilled(payload, 'requestId', payload)
 
     const endState = tasksReducer(startState, action)
 
@@ -76,7 +76,7 @@ test('correct task should be added to correct array', () => {
         startDate: '',
         id: 'id exists'
     }
-    const action = tasksThunks.addTask.fulfilled({task}, 'requestId', {title: task.title, todolistId: task.todoListId})
+    const action = taskThunks.addTask.fulfilled({task}, 'requestId', {title: task.title, todolistId: task.todoListId})
 
     const endState = tasksReducer(startState, action)
 
@@ -108,10 +108,10 @@ test('title of specified task should be changed', () => {
     expect(endState["todolistId1"][1].title).toBe("JS");*/
 
     const newTaskTitle = "PostgreSQL"
-    const domainModel: UpdateDomainTaskModelType = {title: newTaskTitle}
+    const domainModel: UpdateTaskDomainModelType = {title: newTaskTitle}
     const payload = {id: '2', domainModel, todolistId: 'todolistId2'}
 
-    const action = tasksThunks.updateTask.fulfilled(payload, 'requestId', payload)
+    const action = taskThunks.updateTask.fulfilled(payload, 'requestId', payload)
 
     const endState = tasksReducer(startState, action)
 

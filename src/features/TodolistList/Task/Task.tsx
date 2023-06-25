@@ -5,13 +5,13 @@ import {useActions} from "../../../common/hooks/useActions";
 import {EditableSpan} from "../../../common/components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {TaskDomainType, tasksThunks} from "./task.slice";
+import {TaskDomainType, taskThunks} from "./task.slice";
 
 type PropsType = {
   task: TaskDomainType
 }
 export const Task: FC<PropsType> = memo(({task}) => {
-  const {removeTask, updateTask} = useActions(tasksThunks)
+  const {removeTask, updateTask} = useActions(taskThunks)
 
     const handleRemoveTask = useCallback(() => {
       removeTask({id: task.id, todolistId: task.todoListId})
