@@ -5,14 +5,15 @@ export const todolistAPI = {
   getTodolists() {
     return instance.get<Array<TodolistType>>(`todo-lists`)
   },
-  createTodolist(title: string) {
-    return instance.post<CommonResponseType<{ item: TodolistType }>>(`todo-lists/`, {title})
+  createTodolist(arg: CreateTodolistArgType) {
+    return instance.post<CommonResponseType<{ item: TodolistType }>>(
+      `todo-lists/`, {title: arg.title})
   },
-  deleteTodolist(id: string) {
-    return instance.delete<CommonResponseType>(`todo-lists/${id}`)
+  deleteTodolist(arg: DeleteTodolistArgType) {
+    return instance.delete<CommonResponseType>(`todo-lists/${arg.id}`)
   },
-  updateTodolist(id: string, title: string) {
-    return instance.put<CommonResponseType>(`todo-lists/${id}`, {title})
+  updateTodolist(arg: UpdateTodolistArgType) {
+    return instance.put<CommonResponseType>(`todo-lists/${arg.id}`, {title: arg.title})
   },
 }
 export type TodolistType = {
@@ -21,3 +22,8 @@ export type TodolistType = {
   order: number
   title: string
 }
+
+
+export type CreateTodolistArgType = {title: string}
+export type DeleteTodolistArgType = {id: string}
+export type UpdateTodolistArgType = {id: string, title: string}

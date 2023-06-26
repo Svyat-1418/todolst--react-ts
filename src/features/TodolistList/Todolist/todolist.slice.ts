@@ -1,11 +1,16 @@
-import {RequestStatusType} from "../../../app/app.slice";
+import {appActions, RequestStatusType} from "../../../app/app.slice";
 import {ResultCode} from "../../../common/enums/common.enums";
 import {createAppAsyncThunk} from "../../../common/utils/createAppAsyncThunk";
 import {handleServerAppError} from "../../../common/utils/handleServerAppError";
 import {thunkTryCatch} from "../../../common/utils/thunkTryCatch";
 import {taskThunks} from "../Task/task.slice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {todolistAPI, TodolistType} from "./todolist.api";
+import {
+  CreateTodolistArgType,
+  DeleteTodolistArgType,
+  todolistAPI,
+  TodolistType, UpdateTodolistArgType
+} from "./todolist.api";
 
 const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>(
   "todolists/fetchTodolists",
@@ -19,12 +24,12 @@ const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>(
     })
   })
 
-const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>(
+const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, CreateTodolistArgType>(
   'todolists/addTodolist',
-  async (title, thunkAPI) => {
+  async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistAPI.createTodolist(title)
+      const res = await todolistAPI.createTodolist(arg)
       if (res.data.resultCode === ResultCode.success) {
         return {todolist: res.data.data.item}
       } else {
@@ -34,18 +39,18 @@ const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>(
     })
 })
 
-const removeTodolist = createAppAsyncThunk<{ id: string }, { id: string }>(
+const removeTodolist = createAppAsyncThunk<DeleteTodolistArgType, DeleteTodolistArgType>(
   "todolists/removeTodolist",
-  async (payload, thunkAPI) => {
+  async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     thunkAPI.dispatch(todolistsActions.changeTodolistEntityStatus({
-      id: payload.id,
+      id: arg.id,
       entityStatus: "loading"
     }))
     return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistAPI.deleteTodolist(payload.id)
+      const res = await todolistAPI.deleteTodolist(arg)
       if (res.data.resultCode === ResultCode.success) {
-        return {id: payload.id}
+        return arg
       } else {
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
@@ -54,19 +59,23 @@ const removeTodolist = createAppAsyncThunk<{ id: string }, { id: string }>(
   })
 
 const changeTodolistTitle = createAppAsyncThunk<
-  { id: string, title: string },
-  { id: string, title: string }
+  UpdateTodolistArgType,
+  UpdateTodolistArgType
 >("todolists/changeTodolistTitle",
-  async (payload, thunkAPI) => {
+  async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     dispatch(todolistsActions.changeTodolistEntityStatus({
-      id: payload.id,
+      id: arg.id,
       entityStatus: "loading"
     }))
     return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistAPI.updateTodolist(payload.id, payload.title)
+      const res = await todolistAPI.updateTodolist(arg)
       if (res.data.resultCode === ResultCode.success) {
-        return {id: payload.id, title: payload.title}
+        dispatch(todolistsActions.changeTodolistEntityStatus({
+          id: arg.id,
+          entityStatus: "loading"
+        }))
+        return arg
       } else {
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
@@ -116,7 +125,7 @@ const slice = createSlice({
 })
 
 export const {reducer: todolistsReducer, actions: todolistsActions} = slice
-export const todolistsThunks = { addTodolist, changeTodolistTitle, fetchTodolists, removeTodolist }
+export const todolistThunks = { addTodolist, changeTodolistTitle, fetchTodolists, removeTodolist }
 
 export type FilterValuesType = "all" | "active" | "completed"
 export type TodolistDomainType = TodolistType &

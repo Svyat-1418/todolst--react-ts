@@ -4,7 +4,7 @@ import {useActions} from "../../common/hooks/useActions";
 
 import {selectIsLoggedIn} from "../auth/auth.selectors";
 import {selectTodolists} from "./Todolist/todolists.selectors";
-import {todolistsThunks} from "./Todolist/todolist.slice";
+import {todolistThunks} from "./Todolist/todolist.slice";
 
 import {AddItemForm} from "../../common/components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
@@ -17,7 +17,7 @@ export const TodolistList: FC<{ demo: boolean }> = ({demo = false}) => {
   const todolists = useSelector(selectTodolists)
   const isLoggedIn = useSelector(selectIsLoggedIn)
 
-  const {addTodolist, fetchTodolists} = useActions(todolistsThunks)
+  const {addTodolist, fetchTodolists} = useActions(todolistThunks)
 
   useEffect(() => {
     if (demo || !isLoggedIn) {
@@ -28,7 +28,7 @@ export const TodolistList: FC<{ demo: boolean }> = ({demo = false}) => {
 
   
   const addTodolistCallback = useCallback((title: string) => {
-    addTodolist(title)
+    addTodolist({title})
   }, [])
 
   if (!isLoggedIn) {

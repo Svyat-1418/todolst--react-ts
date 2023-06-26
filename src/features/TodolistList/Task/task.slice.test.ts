@@ -5,7 +5,7 @@ import {
     tasksReducer,
     TasksStateType, UpdateTaskDomainModelType,
 } from './task.slice';
-import {todolistsThunks} from "../Todolist/todolist.slice";
+import {todolistThunks} from "../Todolist/todolist.slice";
 import {RequestStatusType} from "../../../app/app.slice";
 
 let startState: TasksStateType
@@ -124,7 +124,7 @@ test('empty arrays should be added when correct todolists will be set', () => {
         {id: "todolistId1", title: "Frontend", filter: "all", addedDate: "", order: 0},
         {id: "todolistId2", title: "Backend", filter: "all", addedDate: "", order: 0}
     ]
-    const endState = tasksReducer({}, todolistsThunks.fetchTodolists.fulfilled({todolists: correctTodolists}, 'requestId', undefined))
+    const endState = tasksReducer({}, todolistThunks.fetchTodolists.fulfilled({todolists: correctTodolists}, 'requestId', undefined))
 
     expect(endState[correctTodolists[0].id]).toStrictEqual([])
 })
@@ -153,7 +153,10 @@ test('new array should be added when new todolist is added', () => {
             addedDate: ''
         }
     }
-    const action = todolistsThunks.addTodolist.fulfilled(payload, 'requestId', payload.todolist.title)
+    const action = todolistThunks.addTodolist.fulfilled(payload, 'requestId', {
+        title: payload
+        .todolist.title
+    })
 
     const endState = tasksReducer(startState, action)
 
@@ -170,7 +173,7 @@ test('new array should be added when new todolist is added', () => {
 
 
 test('property with id should be deleted', () => {
-    const action = todolistsThunks.removeTodolist.fulfilled({id: 'todolistId2'}, 'requestId', {id: 'todolistId2'})
+    const action = todolistThunks.removeTodolist.fulfilled({id: 'todolistId2'}, 'requestId', {id: 'todolistId2'})
 
     const endState = tasksReducer(startState, action)
 

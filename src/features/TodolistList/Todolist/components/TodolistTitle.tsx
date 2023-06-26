@@ -4,7 +4,7 @@ import {FC, useCallback} from "react";
 import {RequestStatusType} from "../../../../app/app.slice";
 import {useActions} from "../../../../common/hooks/useActions";
 import {EditableSpan} from "../../../../common/components/EditableSpan/EditableSpan";
-import {todolistsThunks} from "../todolist.slice";
+import {todolistThunks} from "../todolist.slice";
 
 type PropsType = {
   todolistId: string
@@ -12,7 +12,7 @@ type PropsType = {
   entityStatus: RequestStatusType
 }
 export const TodolistTitle: FC<PropsType> = ({title, entityStatus, todolistId}) => {
-  const {changeTodolistTitle, removeTodolist} = useActions(todolistsThunks)
+  const {changeTodolistTitle, removeTodolist} = useActions(todolistThunks)
   
   const handleRemoveTodolist = useCallback(() => {
     removeTodolist({id: todolistId})

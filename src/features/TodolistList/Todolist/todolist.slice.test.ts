@@ -1,7 +1,7 @@
 import {RequestStatusType} from "../../../app/app.slice";
 import {TodolistType} from "./todolist.api";
 import {
-  todolistsThunks,
+  todolistThunks,
   todolistsActions,
   todolistsReducer,
   TodolistDomainType,
@@ -30,14 +30,14 @@ beforeEach(() => {
 
 test('correct todolists should be set', () => {
   const payload = {todolists: startState}
-  const action = todolistsThunks.fetchTodolists.fulfilled(payload, "requestId", undefined)
+  const action = todolistThunks.fetchTodolists.fulfilled(payload, "requestId", undefined)
 
   const endState = todolistsReducer([], action)
 
   expect(endState.length).toBe(2)
 })
 test('correct todolist should be removed', () => {
-  const endState = todolistsReducer(startState, todolistsThunks.removeTodolist.fulfilled({id: todolistId1}, 'requestId', {id: todolistId1}))
+  const endState = todolistsReducer(startState, todolistThunks.removeTodolist.fulfilled({id: todolistId1}, 'requestId', {id: todolistId1}))
 
   expect(endState.length).toBe(1)
   expect(endState[0].id).toBe(todolistId2)
@@ -52,7 +52,10 @@ test('correct todolist should be added', () => {
   }
 
 
-  const endState = todolistsReducer(startState, todolistsThunks.addTodolist.fulfilled({todolist}, "requestId", todolist.title))
+  const endState = todolistsReducer(startState, todolistThunks.addTodolist.fulfilled(
+    {todolist},
+    "requestId",
+    {title: todolist.title}))
 
   expect(endState.length).toBe(3)
   expect(endState[0].title).toBe(todolist.title)
@@ -63,7 +66,7 @@ test('correct todolist should change its name', () => {
   let newTodolistTitle = 'New Todolist'
 
   let payload = {id: todolistId2, title: newTodolistTitle}
-  const action = todolistsThunks.changeTodolistTitle.fulfilled(payload,"requestId", payload)
+  const action = todolistThunks.changeTodolistTitle.fulfilled(payload,"requestId", payload)
 
   const endState = todolistsReducer(startState, action)
 

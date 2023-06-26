@@ -2,7 +2,7 @@ import {ResultCode} from "../../../common/enums/common.enums";
 import {createAppAsyncThunk} from "../../../common/utils/createAppAsyncThunk";
 import {handleServerAppError} from "../../../common/utils/handleServerAppError";
 import {thunkTryCatch} from "../../../common/utils/thunkTryCatch";
-import {todolistsThunks} from "../Todolist/todolist.slice";
+import {todolistThunks} from "../Todolist/todolist.slice";
 import {appActions, RequestStatusType} from "../../../app/app.slice";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
@@ -134,15 +134,15 @@ const slice = createSlice({
       })
       .addCase(appActions.clearData, () => {
       })
-      .addCase(todolistsThunks.fetchTodolists.fulfilled, (state, action) => {
+      .addCase(todolistThunks.fetchTodolists.fulfilled, (state, action) => {
         action.payload.todolists.forEach(tl => {
           state[tl.id] = []
         })
       })
-      .addCase(todolistsThunks.addTodolist.fulfilled, (state, action) => {
+      .addCase(todolistThunks.addTodolist.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = []
       })
-      .addCase(todolistsThunks.removeTodolist.fulfilled, (state, action) => {
+      .addCase(todolistThunks.removeTodolist.fulfilled, (state, action) => {
         delete state[action.payload.id]
       })
   }
