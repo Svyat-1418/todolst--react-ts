@@ -42,7 +42,8 @@
     "jest:integration update": "yarn run jest:integration -u`",
     "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "prettier": "prettier --write ."
   },
   "eslintConfig": {
     "extends": [
@@ -83,10 +84,12 @@
     "@storybook/preset-create-react-app": "^4.1.0",
     "@storybook/react": "^6.5.3",
     "@storybook/testing-library": "^0.0.11",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "babel-plugin-named-exports-order": "^0.0.2",
     "gh-pages": "^4.0.0",
     "jest-image-snapshot": "^4.5.1",
     "jest-puppeteer": "^6.1.0",
+    "prettier": "^2.8.8",
     "prop-types": "^15.8.1",
     "puppeteer": "^14.1.1",
     "start-server-and-test": "^1.14.0",

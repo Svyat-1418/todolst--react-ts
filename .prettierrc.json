@@ -1,0 +1,17 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "useTabs": true,
+  "printWidth": 95,
+  "singleQuote": true,
+  "semi": false,
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+
+    "^../(.*)",
+    "^./(.*)",
+    "(.css)$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
