@@ -16,13 +16,16 @@ const slice = createSlice({
 		setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
 			state.error = action.payload.error
 		},
+		setAppIsInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
+			state.isInitialized = action.payload.isInitialized
+		},
 		clearData: () => {},
 	},
-	extraReducers: (builder) => {
-		builder.addCase(authThunks.initializeApp.fulfilled, (state) => {
-			state.isInitialized = true
-		})
-	},
+	// extraReducers: (builder) => {
+	// 	builder.addCase(authThunks.initializeApp.fulfilled, (state) => {
+	// 		state.isInitialized = true
+	// 	})
+	// },
 })
 
 export const { reducer: appReducer, actions: appActions } = slice
