@@ -3,32 +3,43 @@ import { ResultCode } from 'common/enums/common.enums'
 import { createAppAsyncThunk } from 'common/utils/createAppAsyncThunk'
 
 import { appActions } from '../../app/app.slice'
+import { handleServerAppError } from '../../common/utils/handleServerAppError'
+import { thunkTryCatch } from '../../common/utils/thunkTryCatch'
 
 import { LoginParamsType, authAPI } from './auth.api'
 
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
 	'auth/login',
 	async (arg, thunkAPI) => {
-		const { rejectWithValue } = thunkAPI
-		const res = await authAPI.login(arg)
-		if (res.data.resultCode === ResultCode.success) {
-			return { isLoggedIn: true }
-		} else {
-			return rejectWithValue(null)
-		}
+		const { dispatch, rejectWithValue } = thunkAPI
+		return thunkTryCatch(thunkAPI, async () => {
+			const res = await authAPI.login(arg)
+			if (res.data.resultCode === ResultCode.success) {
+				return { isLoggedIn: true }
+			} else {
+				const isShowAppError = !res.data.fieldsErrors.length
+				handleServerAppError(res.data, dispatch, isShowAppError)
+				return rejectWithValue(res.data)
+			}
+		})
 	}
 )
 
 const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
 	'auth/logout',
-	async (_, { dispatch, rejectWithValue }) => {
-		const res = await authAPI.logout()
-		if (res.data.resultCode === ResultCode.success) {
-			dispatch(appActions.clearData())
-			return { isLoggedIn: false }
-		} else {
-			return rejectWithValue(null)
-		}
+	async (_, thunkAPI) => {
+		const { dispatch, rejectWithValue } = thunkAPI
+		return thunkTryCatch(thunkAPI, async () => {
+			const res = await authAPI.logout()
+			if (res.data.resultCode === ResultCode.success) {
+				dispatch(appActions.clearData())
+
+				return { isLoggedIn: false }
+			} else {
+				handleServerAppError(res.data, dispatch)
+				return rejectWithValue(null)
+			}
+		})
 	}
 )
 

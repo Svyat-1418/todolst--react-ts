@@ -7,20 +7,19 @@ import FormLabel from '@mui/material/FormLabel'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import { useActions } from 'common/hooks/useActions'
+import { CommonResponseType } from 'common/types/common.types'
 import { selectIsLoggedIn } from 'features/auth/auth.selectors'
-import { useFormik } from 'formik'
+import { FormikHelpers, useFormik } from 'formik'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
-import { LoginParamsType } from './auth.api'
-import { authThunks } from './auth.slice'
+import { LoginParamsType } from '../auth.api'
+import { authThunks } from '../auth.slice'
 
-type FormikErrorType = {
-	email?: string
-	password?: string
-	rememberMe?: boolean
-}
+import styles from './Login.module.css'
+
+type FormikErrorType = Partial<Omit<LoginParamsType, 'captcha'>>
 
 export const Login = () => {
 	const { login } = useActions(authThunks)
@@ -34,25 +33,34 @@ export const Login = () => {
 			rememberMe: false,
 		},
 		validate: (values) => {
-			const errors: Partial<LoginParamsType> = {}
-			//Partial<LoginParamsType> делает ВСЕ поля LoginParamsType необязательными не влияя на сам тип
-
-			if (!values.email) {
-				errors.email = 'Required'
-			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-				errors.email = 'Invalid email address'
-			}
-
-			if (!values.password) {
-				errors.password = 'Required'
-			} else if (values.password.length < 3) {
-				errors.password = 'Min length must be 3'
-			}
-			return errors
+			// const errors: Partial<LoginParamsType> = {}
+			//
+			// if (!values.email) {
+			// 	errors.email = 'Required'
+			// } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+			// 	errors.email = 'Invalid email address'
+			// }
+			//
+			// if (!values.password) {
+			// 	errors.password = 'Required'
+			// } else if (values.password.length < 3) {
+			// 	errors.password = 'Min length must be 3'
+			// }
+			// return errors
 		},
-		onSubmit: (values) => {
-			formik.resetForm()
+		onSubmit: (values, formikHelpers) => {
 			login(values)
+				.unwrap()
+				.catch((reason: CommonResponseType) => {
+					const { fieldsErrors } = reason
+					if (fieldsErrors) {
+						fieldsErrors.forEach(
+							(fieldError: { field: string; error: string | undefined }) => {
+								formikHelpers.setFieldError(fieldError.field, fieldError.error)
+							}
+						)
+					}
+				})
 		},
 	})
 
@@ -80,7 +88,7 @@ export const Login = () => {
 						<FormGroup>
 							<TextField label="Email" margin="normal" {...formik.getFieldProps('email')} />
 							{formik.errors.email && formik.touched.email && (
-								<div style={{ color: 'red' }}>{formik.errors.email}</div>
+								<div className={styles.fieldError}>{formik.errors.email}</div>
 							)}
 							<TextField
 								type="password"
@@ -89,7 +97,7 @@ export const Login = () => {
 								{...formik.getFieldProps('password')}
 							/>
 							{formik.errors.password && formik.touched.password && (
-								<div style={{ color: 'red' }}>{formik.errors.password}</div>
+								<div className={styles.fieldError}>{formik.errors.password}</div>
 							)}
 							<FormControlLabel
 								label={'Remember me'}

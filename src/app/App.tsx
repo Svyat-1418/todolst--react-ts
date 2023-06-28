@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/material'
 import { useActions } from 'common/hooks/useActions'
 import { TodolistList } from 'features/TodolistList/TodolistList'
-import { Login } from 'features/auth/Login'
+import { Login } from 'features/auth/Login/Login'
 import { authThunks } from 'features/auth/auth.slice'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
