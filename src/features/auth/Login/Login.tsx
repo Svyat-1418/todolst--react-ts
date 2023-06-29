@@ -9,8 +9,7 @@ import TextField from '@mui/material/TextField'
 import { useActions } from 'common/hooks/useActions'
 import { CommonResponseType } from 'common/types/common.types'
 import { selectIsLoggedIn } from 'features/auth/auth.selectors'
-import { FormikHelpers, useFormik } from 'formik'
-import React from 'react'
+import { useFormik } from 'formik'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
@@ -33,20 +32,20 @@ export const Login = () => {
 			rememberMe: false,
 		},
 		validate: (values) => {
-			// const errors: Partial<LoginParamsType> = {}
-			//
-			// if (!values.email) {
-			// 	errors.email = 'Required'
-			// } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-			// 	errors.email = 'Invalid email address'
-			// }
-			//
-			// if (!values.password) {
-			// 	errors.password = 'Required'
-			// } else if (values.password.length < 3) {
-			// 	errors.password = 'Min length must be 3'
-			// }
-			// return errors
+			const errors: FormikErrorType = {}
+
+			if (!values.email) {
+				errors.email = 'Required'
+			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+				errors.email = 'Invalid email address'
+			}
+
+			if (!values.password) {
+				errors.password = 'Required'
+			} else if (values.password.length < 3) {
+				errors.password = 'Min length must be 3'
+			}
+			return errors
 		},
 		onSubmit: (values, formikHelpers) => {
 			login(values)

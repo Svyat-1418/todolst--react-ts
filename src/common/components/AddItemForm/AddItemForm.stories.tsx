@@ -16,6 +16,9 @@ export default {
 const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />
 
 export const AddItemFormBasicStory = Template.bind({})
+
 AddItemFormBasicStory.args = {
+	// TODO FIX STORY
+	// @ts-ignore
 	addItem: action('Button inside form clicked & value wants to set'),
 }

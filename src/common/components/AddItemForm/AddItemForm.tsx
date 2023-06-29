@@ -3,8 +3,10 @@ import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import { ChangeEvent, FC, KeyboardEvent, memo, useCallback, useState } from 'react'
 
+import { CommonResponseType } from '../../types/common.types'
+
 type PropsType = {
-	addItem: (title: string) => void
+	addItem: (title: string) => Promise<any>
 	disabled?: boolean
 }
 export const AddItemForm: FC<PropsType> = memo(({ addItem, disabled }) => {
@@ -14,9 +16,12 @@ export const AddItemForm: FC<PropsType> = memo(({ addItem, disabled }) => {
 	const handleAddItem = useCallback(() => {
 		if (title.trim() !== '') {
 			addItem(title.trim())
-			setTitle('')
-		} else {
-			setError('Title is required')
+				.then(() => {
+					setTitle('')
+				})
+				.catch((reason: CommonResponseType) => {
+					setError(reason.messages[0])
+				})
 		}
 	}, [addItem, title])
 

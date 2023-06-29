@@ -38,7 +38,7 @@ const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, CreateTodoli
 				return { todolist: res.data.data.item }
 			} else {
 				handleServerAppError(res.data, dispatch, false)
-				return rejectWithValue(null)
+				return rejectWithValue(res.data)
 			}
 		})
 	}

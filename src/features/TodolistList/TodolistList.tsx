@@ -25,7 +25,7 @@ export const TodolistList: FC<{ demo: boolean }> = ({ demo = false }) => {
 	}, [demo, isLoggedIn])
 
 	const addTodolistCallback = useCallback((title: string) => {
-		addTodolist({ title })
+		return addTodolist({ title }).unwrap()
 	}, [])
 
 	if (!isLoggedIn) {
