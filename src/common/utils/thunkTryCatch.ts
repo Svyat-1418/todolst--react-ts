@@ -11,13 +11,10 @@ export const thunkTryCatch = async (
 ) => {
 	const { dispatch, rejectWithValue } = thunkAPI
 
-	dispatch(appActions.setAppStatus({ status: 'loading' }))
 	try {
 		return await logic()
 	} catch (e) {
 		handleServerNetworkError(e, dispatch)
 		return rejectWithValue(null)
-	} finally {
-		dispatch(appActions.setAppStatus({ status: 'idle' }))
 	}
 }

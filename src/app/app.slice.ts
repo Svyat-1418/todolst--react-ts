@@ -21,11 +21,31 @@ const slice = createSlice({
 		},
 		clearData: () => {},
 	},
-	// extraReducers: (builder) => {
-	// 	builder.addCase(authThunks.initializeApp.fulfilled, (state) => {
-	// 		state.isInitialized = true
-	// 	})
-	// },
+	extraReducers: (builder) => {
+		builder
+			.addMatcher(
+				(action) => action.type.endsWith('pending'),
+				(state) => {
+					state.status = 'loading'
+				}
+			)
+			.addMatcher(
+				(action) => action.type.endsWith('/fulfilled'),
+				(state) => {
+					state.status = 'succeeded'
+				}
+			)
+			.addMatcher(
+				(action) => {
+					console.log('✅✅✅ addMatcher matcher', action)
+					return action.type.endsWith('/rejected')
+				},
+				(state, action) => {
+					state.status = 'failed'
+					console.log('✅ addMatcher reducer', state, action)
+				}
+			)
+	},
 })
 
 export const { reducer: appReducer, actions: appActions } = slice
