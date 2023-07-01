@@ -1,9 +1,8 @@
 import AddCircleOutline from '@mui/icons-material/AddCircleOutline'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
+import { RejectValueType } from 'common/utils/createAppAsyncThunk'
 import { ChangeEvent, FC, KeyboardEvent, memo, useCallback, useState } from 'react'
-
-import { CommonResponseType } from '../../types/common.types'
 
 type PropsType = {
 	addItem: (title: string) => Promise<any>
@@ -19,8 +18,13 @@ export const AddItemForm: FC<PropsType> = memo(({ addItem, disabled }) => {
 				.then(() => {
 					setTitle('')
 				})
-				.catch((reason: CommonResponseType) => {
-					setError(reason.messages[0])
+				.catch((reason: RejectValueType) => {
+					console.log(reason)
+					debugger
+					if (reason.data) {
+						const message = reason.data.messages
+						setError(message[0])
+					}
 				})
 		}
 	}, [addItem, title])

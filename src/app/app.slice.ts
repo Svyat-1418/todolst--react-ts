@@ -1,7 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-import { authThunks } from '../features/auth/auth.slice'
-
 const slice = createSlice({
 	name: 'app',
 	initialState: {
@@ -41,6 +39,17 @@ const slice = createSlice({
 					return action.type.endsWith('/rejected')
 				},
 				(state, action) => {
+					const { payload, error } = action
+					debugger
+					if (payload) {
+						if (payload.showGlobalError) {
+							state.error = payload.data.messages.length
+								? payload.data.messages[0]
+								: 'Some error occurred'
+						}
+					} else {
+						state.error = error.message ? error.message : 'Some error occurred'
+					}
 					state.status = 'failed'
 					console.log('✅ addMatcher reducer', state, action)
 				}

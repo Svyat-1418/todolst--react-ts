@@ -4,14 +4,14 @@ import { TaskPriorities, TaskStatuses } from 'common/enums/common.enums'
 import { todolistThunks } from '../Todolist/todolist.slice'
 
 import {
-	TasksStateType,
+	TaskStateType,
 	UpdateTaskDomainModelType,
 	taskThunks,
 	tasksActions,
 	tasksReducer,
 } from './task.slice'
 
-let startState: TasksStateType
+let startState: TaskStateType
 
 beforeEach(() => {
 	startState = {

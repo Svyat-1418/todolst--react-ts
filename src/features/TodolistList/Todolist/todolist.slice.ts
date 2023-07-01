@@ -2,8 +2,6 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { RequestStatusType, appActions } from 'app/app.slice'
 import { ResultCode } from 'common/enums/common.enums'
 import { createAppAsyncThunk } from 'common/utils/createAppAsyncThunk'
-import { handleServerAppError } from 'common/utils/handleServerAppError'
-import { thunkTryCatch } from 'common/utils/thunkTryCatch'
 
 import { taskThunks } from '../Task/task.slice'
 
@@ -17,80 +15,65 @@ import {
 
 const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>(
 	'todolists/fetchTodolists',
-	async (_, thunkAPI) => {
-		const { dispatch } = thunkAPI
-		return thunkTryCatch(thunkAPI, async () => {
-			const res = await todolistAPI.getTodolists()
-			const todolists = res.data
-			todolists.forEach((tl) => dispatch(taskThunks.fetchTasks({ todolistId: tl.id })))
-			return { todolists }
-		})
+	async (_, { dispatch }) => {
+		const res = await todolistAPI.getTodolists()
+		const todolists = res.data
+		todolists.forEach((tl) => dispatch(taskThunks.fetchTasks({ todolistId: tl.id })))
+		return { todolists }
 	}
 )
 
 const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, CreateTodolistArgType>(
 	'todolists/addTodolist',
-	async (arg, thunkAPI) => {
-		const { dispatch, rejectWithValue } = thunkAPI
-		return thunkTryCatch(thunkAPI, async () => {
-			const res = await todolistAPI.createTodolist(arg)
-			if (res.data.resultCode === ResultCode.success) {
-				return { todolist: res.data.data.item }
-			} else {
-				handleServerAppError(res.data, dispatch, false)
-				return rejectWithValue(res.data)
-			}
-		})
+	async (arg, { rejectWithValue }) => {
+		const res = await todolistAPI.createTodolist(arg)
+		if (res.data.resultCode === ResultCode.success) {
+			return { todolist: res.data.data.item }
+		} else {
+			return rejectWithValue({ data: res.data, showGlobalError: false })
+		}
 	}
 )
 
 const removeTodolist = createAppAsyncThunk<DeleteTodolistArgType, DeleteTodolistArgType>(
 	'todolists/removeTodolist',
-	async (arg, thunkAPI) => {
-		const { dispatch, rejectWithValue } = thunkAPI
-		thunkAPI.dispatch(
-			todolistsActions.changeTodolistEntityStatus({
-				id: arg.id,
-				entityStatus: 'loading',
-			})
-		)
-		return thunkTryCatch(thunkAPI, async () => {
-			const res = await todolistAPI.deleteTodolist(arg)
-			if (res.data.resultCode === ResultCode.success) {
-				return arg
-			} else {
-				handleServerAppError(res.data, dispatch)
-				return rejectWithValue(null)
-			}
-		})
-	}
-)
-
-const changeTodolistTitle = createAppAsyncThunk<UpdateTodolistArgType, UpdateTodolistArgType>(
-	'todolists/changeTodolistTitle',
-	async (arg, thunkAPI) => {
-		const { dispatch, rejectWithValue } = thunkAPI
+	async (arg, { dispatch, rejectWithValue }) => {
 		dispatch(
 			todolistsActions.changeTodolistEntityStatus({
 				id: arg.id,
 				entityStatus: 'loading',
 			})
 		)
-		return thunkTryCatch(thunkAPI, async () => {
-			const res = await todolistAPI.updateTodolist(arg)
-			if (res.data.resultCode === ResultCode.success) {
-				dispatch(
-					todolistsActions.changeTodolistEntityStatus({
-						id: arg.id,
-						entityStatus: 'loading',
-					})
-				)
-				return arg
-			} else {
-				handleServerAppError(res.data, dispatch)
-				return rejectWithValue(null)
-			}
-		})
+		const res = await todolistAPI.deleteTodolist(arg)
+		if (res.data.resultCode === ResultCode.success) {
+			return arg
+		} else {
+			return rejectWithValue({ data: res.data, showGlobalError: true })
+		}
+	}
+)
+
+const changeTodolistTitle = createAppAsyncThunk<UpdateTodolistArgType, UpdateTodolistArgType>(
+	'todolists/changeTodolistTitle',
+	async (arg, { dispatch, rejectWithValue }) => {
+		dispatch(
+			todolistsActions.changeTodolistEntityStatus({
+				id: arg.id,
+				entityStatus: 'loading',
+			})
+		)
+		const res = await todolistAPI.updateTodolist(arg)
+		if (res.data.resultCode === ResultCode.success) {
+			dispatch(
+				todolistsActions.changeTodolistEntityStatus({
+					id: arg.id,
+					entityStatus: 'loading',
+				})
+			)
+			return arg
+		} else {
+			return rejectWithValue({ data: res.data, showGlobalError: true })
+		}
 	}
 )
 
