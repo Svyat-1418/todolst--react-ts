@@ -3,6 +3,7 @@ import { RequestStatusType, appActions } from 'app/app.slice'
 import { ResultCode } from 'common/enums/common.enums'
 import { createAppAsyncThunk } from 'common/utils/createAppAsyncThunk'
 
+import { clearState } from '../../../common/actions/common.actions'
 import { todolistThunks } from '../Todolist/todolist.slice'
 
 import {
@@ -143,7 +144,6 @@ const slice = createSlice({
 					tasks[index] = { ...tasks[index], ...action.payload.domainModel }
 				}
 			})
-			.addCase(appActions.clearData, () => {})
 			.addCase(todolistThunks.fetchTodolists.fulfilled, (state, action) => {
 				action.payload.todolists.forEach((tl) => {
 					state[tl.id] = []
@@ -154,6 +154,9 @@ const slice = createSlice({
 			})
 			.addCase(todolistThunks.removeTodolist.fulfilled, (state, action) => {
 				delete state[action.payload.id]
+			})
+			.addCase(clearState, () => {
+				return {}
 			})
 	},
 })

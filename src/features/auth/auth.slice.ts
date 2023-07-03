@@ -3,6 +3,7 @@ import { ResultCode } from 'common/enums/common.enums'
 import { createAppAsyncThunk } from 'common/utils/createAppAsyncThunk'
 
 import { appActions } from '../../app/app.slice'
+import { clearState } from '../../common/actions/common.actions'
 
 import { LoginParamsType, authAPI } from './auth.api'
 
@@ -24,7 +25,7 @@ const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
 	async (_, { dispatch, rejectWithValue }) => {
 		const res = await authAPI.logout()
 		if (res.data.resultCode === ResultCode.success) {
-			dispatch(appActions.clearData())
+			dispatch(clearState())
 			return { isLoggedIn: false }
 		} else {
 			return rejectWithValue({ data: res.data, showGlobalError: true })

@@ -1,8 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { RequestStatusType, appActions } from 'app/app.slice'
+import { RequestStatusType } from 'app/app.slice'
 import { ResultCode } from 'common/enums/common.enums'
 import { createAppAsyncThunk } from 'common/utils/createAppAsyncThunk'
 
+import { clearState } from '../../../common/actions/common.actions'
 import { taskThunks } from '../Task/task.slice'
 
 import {
@@ -118,7 +119,7 @@ const slice = createSlice({
 				const index = state.findIndex((tl) => tl.id === action.payload.id)
 				state[index].title = action.payload.title
 			})
-			.addCase(appActions.clearData, () => {
+			.addCase(clearState, () => {
 				return []
 			})
 	},

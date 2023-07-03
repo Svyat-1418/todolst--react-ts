@@ -17,7 +17,6 @@ const slice = createSlice({
 		setAppIsInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
 			state.isInitialized = action.payload.isInitialized
 		},
-		clearData: () => {},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -35,7 +34,6 @@ const slice = createSlice({
 			)
 			.addMatcher(
 				(action) => {
-					console.log('✅✅✅ addMatcher matcher', action)
 					return action.type.endsWith('/rejected')
 				},
 				(state, action) => {
@@ -51,7 +49,6 @@ const slice = createSlice({
 						state.error = error.message ? error.message : 'Some error occurred'
 					}
 					state.status = 'failed'
-					console.log('✅ addMatcher reducer', state, action)
 				}
 			)
 	},
